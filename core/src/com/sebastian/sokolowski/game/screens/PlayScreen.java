@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
+import com.sebastian.sokolowski.game.sprites.Player;
 
 /**
  * Created by Sebastian Sokołowski on 05.04.17.
@@ -35,56 +36,63 @@ public class PlayScreen implements Screen {
     //tiled map
     private TmxMapLoader tmxMapLoader;
     private TiledMap tiledMap;
-    private OrthoCachedTiledMapRenderer orthoCachedTiledMapRenderer;
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
+    private Player player;
+
     public PlayScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
         orthographicCamera = new OrthographicCamera();
-        viewPort = new FitViewport(MyGdxGame.V_WIDTH, myGdxGame.V_HEIGHT, orthographicCamera);
+        viewPort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, myGdxGame.V_HEIGHT / MyGdxGame.PPM, orthographicCamera);
 
         hud = new Hud(myGdxGame.batch);
 
         tmxMapLoader = new TmxMapLoader();
         tiledMap = tmxMapLoader.load("level1.tmx");
-        orthoCachedTiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
+        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / MyGdxGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, -10), true);
+
         box2DDebugRenderer = new Box2DDebugRenderer();
+
+        player = new Player(world);
 
         BodyDef bodyDef = new BodyDef();
         PolygonShape polygonShape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
+
         //ground
         for (MapObject mapObject : tiledMap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight() / 2);
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
 
             body = world.createBody(bodyDef);
 
-            polygonShape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
             fixtureDef.shape = polygonShape;
 
             body.createFixture(fixtureDef);
         }
+
 
         //beers
         for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight() / 2);
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
 
             body = world.createBody(bodyDef);
 
-            polygonShape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
             fixtureDef.shape = polygonShape;
 
             body.createFixture(fixtureDef);
@@ -95,11 +103,11 @@ public class PlayScreen implements Screen {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight() / 2);
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
 
             body = world.createBody(bodyDef);
 
-            polygonShape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
             fixtureDef.shape = polygonShape;
 
             body.createFixture(fixtureDef);
@@ -114,13 +122,17 @@ public class PlayScreen implements Screen {
     public void update(float delta) {
         handleInput(delta);
 
+        world.step(1 / 60f, 6, 2);
+
+        player.update(delta);
+
         orthographicCamera.update();
-        orthoCachedTiledMapRenderer.setView(orthographicCamera);
+        orthogonalTiledMapRenderer.setView(orthographicCamera);
     }
 
     private void handleInput(float delta) {
         if (Gdx.input.isTouched()) {
-            orthographicCamera.position.x += 400 * delta;
+            orthographicCamera.position.x += 3 * delta;
         }
     }
 
@@ -130,11 +142,9 @@ public class PlayScreen implements Screen {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-
 
         // render map
-        orthoCachedTiledMapRenderer.render();
+        orthogonalTiledMapRenderer.render();
 
         box2DDebugRenderer.render(world, orthographicCamera.combined);
 
