@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="250" height="15" tilewidth="70" tileheight="70" nextobjectid="20">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="250" height="15" tilewidth="70" tileheight="70" nextobjectid="22">
  <tileset firstgid="1" name="tiles" tilewidth="70" tileheight="146" tilecount="175" columns="0">
   <tile id="0">
    <image width="70" height="70" source="Tiles/door_openTop.png"/>
@@ -523,8 +523,8 @@
   <tile id="175">
    <image width="70" height="70" source="Tiles/bg.png"/>
   </tile>
-  <tile id="177">
-   <image width="70" height="105" source="Tiles/dzik.png"/>
+  <tile id="176">
+   <image width="70" height="70" source="Tiles/dzik.png"/>
   </tile>
  </tileset>
  <layer name="background" width="250" height="15">
@@ -571,7 +571,7 @@
   <object id="14" x="1124" y="982" width="624" height="75"/>
  </objectgroup>
  <objectgroup name="beers">
-  <object id="10" x="912" y="670" width="556" height="97"/>
+  <object id="21" x="911" y="701" width="558" height="67"/>
  </objectgroup>
  <objectgroup name="ladders">
   <object id="11" x="840" y="773" width="67" height="206"/>
