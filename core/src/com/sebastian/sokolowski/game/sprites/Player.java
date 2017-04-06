@@ -24,7 +24,7 @@ public class Player extends Sprite {
 
     private void definePlayer() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(210 / MyGdxGame.PPM, 210 / MyGdxGame.PPM);
+        bodyDef.position.set((MyGdxGame.V_WIDTH / 2) / MyGdxGame.PPM, 210 / MyGdxGame.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
