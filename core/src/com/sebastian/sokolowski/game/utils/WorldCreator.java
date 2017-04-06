@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.sprites.Beer;
+import com.sebastian.sokolowski.game.sprites.Ladder;
 
 /**
  * Created by Sebastian Sokołowski on 07.04.17.
@@ -43,30 +45,14 @@ public class WorldCreator {
         for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
-
-            body = world.createBody(bodyDef);
-
-            polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
-            fixtureDef.shape = polygonShape;
-
-            body.createFixture(fixtureDef);
+            new Beer(world, tiledMap, rectangle);
         }
 
         //ladders
         for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
-
-            body = world.createBody(bodyDef);
-
-            polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
-            fixtureDef.shape = polygonShape;
-
-            body.createFixture(fixtureDef);
+            new Ladder(world, tiledMap, rectangle);
         }
     }
 }

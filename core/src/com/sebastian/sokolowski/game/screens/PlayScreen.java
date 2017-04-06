@@ -134,6 +134,10 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        tiledMap.dispose();
+        box2DDebugRenderer.dispose();
+        world.dispose();
+        box2DDebugRenderer.dispose();
+        hud.dispose();
     }
 }
