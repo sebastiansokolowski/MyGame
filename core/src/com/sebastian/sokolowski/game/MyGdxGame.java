@@ -9,7 +9,7 @@ public class MyGdxGame extends Game {
     public static final int V_HEIGHT = 720;
     public static final float PPM = 100;
 
-    public SpriteBatch batch;
+    public static SpriteBatch batch;
 
     @Override
     public void create() {

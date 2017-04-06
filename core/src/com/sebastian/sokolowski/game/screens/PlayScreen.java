@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sebastian.sokolowski.game.Controller;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
 import com.sebastian.sokolowski.game.sprites.Player;
@@ -29,6 +30,7 @@ import com.sebastian.sokolowski.game.sprites.Player;
 
 public class PlayScreen implements Screen {
     private final MyGdxGame myGdxGame;
+    private final Controller controller;
     private OrthographicCamera orthographicCamera;
     private Viewport viewPort;
     private Hud hud;
@@ -54,6 +56,8 @@ public class PlayScreen implements Screen {
         tiledMap = tmxMapLoader.load("level1.tmx");
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / MyGdxGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
+
+        controller = new Controller();
 
         world = new World(new Vector2(0, -10), true);
 
@@ -131,9 +135,14 @@ public class PlayScreen implements Screen {
     }
 
     private void handleInput(float delta) {
-        if (Gdx.input.isTouched()) {
-            orthographicCamera.position.x += 3 * delta;
-        }
+        if (controller.isRightPressed())
+            player.body.setLinearVelocity(new Vector2(5, player.body.getLinearVelocity().y));
+        else if (controller.isLeftPressed())
+            player.body.setLinearVelocity(new Vector2(-5, player.body.getLinearVelocity().y));
+        else
+            player.body.setLinearVelocity(new Vector2(0, player.body.getLinearVelocity().y));
+        if (controller.isUpPressed() && player.body.getLinearVelocity().y == 0)
+            player.body.applyLinearImpulse(new Vector2(0, 10f), player.body.getWorldCenter(), true);
     }
 
     @Override
@@ -149,12 +158,17 @@ public class PlayScreen implements Screen {
         box2DDebugRenderer.render(world, orthographicCamera.combined);
 
         myGdxGame.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+
+        //draw
+        controller.draw();
         hud.stage.draw();
+
     }
 
     @Override
     public void resize(int width, int height) {
         viewPort.update(width, height);
+        controller.resize(width, height);
     }
 
     @Override
