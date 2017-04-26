@@ -98,7 +98,7 @@ public class PlayScreen implements Screen {
         else
             player.body.setLinearVelocity(new Vector2(0, player.body.getLinearVelocity().y));
         if (controller.isUpPressed() && player.body.getLinearVelocity().y == 0)
-            player.body.applyLinearImpulse(new Vector2(0, 10f), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(0, 5f), player.body.getWorldCenter(), true);
     }
 
     @Override
