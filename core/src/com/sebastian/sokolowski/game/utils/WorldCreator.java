@@ -26,7 +26,7 @@ public class WorldCreator {
         Body body;
 
         //ground
-        for (MapObject mapObject : tiledMap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -41,18 +41,18 @@ public class WorldCreator {
         }
 
 
-        //beers
-        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-
-            new Beer(world, tiledMap, rectangle);
-        }
-
-        //ladders
-        for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-
-            new Ladder(world, tiledMap, rectangle);
-        }
+//        //beers
+//        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+//            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+//
+//            new Beer(world, tiledMap, rectangle);
+//        }
+//
+//        //ladders
+//        for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+//            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+//
+//            new Ladder(world, tiledMap, rectangle);
+//        }
     }
 }
