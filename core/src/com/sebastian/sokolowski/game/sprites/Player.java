@@ -17,15 +17,15 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 public class Player extends Sprite {
     public World world;
     public Body body;
-    private TextureRegion textureRegion;
+    private TextureRegion playerStand;
 
     public Player(World world, PlayScreen playScreen) {
         super(playScreen.getTextureAtlas().findRegion("basic"));
         this.world = world;
         definePlayer();
-        textureRegion = new TextureRegion(getTexture(), 0, 0, 70, 70);
-        setBounds(0, 0, 70 / MyGdxGame.PPM, 70 / MyGdxGame.PPM);
-        setRegion(textureRegion);
+        playerStand = new TextureRegion(getTexture(), 0, 0, 50, 50);
+        setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
+        setRegion(playerStand);
     }
 
     private void definePlayer() {

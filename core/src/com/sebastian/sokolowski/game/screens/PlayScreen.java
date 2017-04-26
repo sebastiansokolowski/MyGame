@@ -24,7 +24,7 @@ import com.sebastian.sokolowski.game.utils.WorldCreator;
  */
 
 public class PlayScreen implements Screen {
-    private final MyGdxGame myGdxGame;
+    private final MyGdxGame game;
     private final Controller controller;
     private TextureAtlas textureAtlas;
 
@@ -43,14 +43,14 @@ public class PlayScreen implements Screen {
     private Player player;
 
 
-    public PlayScreen(MyGdxGame myGdxGame) {
-        this.myGdxGame = myGdxGame;
+    public PlayScreen(MyGdxGame game) {
+        this.game = game;
         textureAtlas = new TextureAtlas("Tiles/Player/player.pack");
 
         orthographicCamera = new OrthographicCamera();
-        viewPort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, myGdxGame.V_HEIGHT / MyGdxGame.PPM, orthographicCamera);
+        viewPort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, game.V_HEIGHT / MyGdxGame.PPM, orthographicCamera);
 
-        hud = new Hud(myGdxGame.batch);
+        hud = new Hud(game.batch);
 
         tmxMapLoader = new TmxMapLoader();
         tiledMap = tmxMapLoader.load("level1.tmx");
@@ -113,10 +113,10 @@ public class PlayScreen implements Screen {
 
         box2DDebugRenderer.render(world, orthographicCamera.combined);
 
-        myGdxGame.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        myGdxGame.batch.begin();
-        player.draw(myGdxGame.batch);
-        myGdxGame.batch.end();
+        game.batch.setProjectionMatrix(orthographicCamera.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
 
         //draw
         controller.draw();
