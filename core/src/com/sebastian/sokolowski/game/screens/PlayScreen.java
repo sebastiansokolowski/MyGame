@@ -57,13 +57,14 @@ public class PlayScreen implements Screen {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / MyGdxGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
-        controller = new Controller();
 
         world = new World(new Vector2(0, -10), true);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         player = new Player(world, this);
+
+        controller = new Controller(player);
 
         new WorldCreator(tiledMap, world);
     }
@@ -78,7 +79,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float delta) {
-        handleInput(delta);
+        controller.update();
 
         world.step(1 / 60f, 6, 2);
 
@@ -88,17 +89,6 @@ public class PlayScreen implements Screen {
 
         orthographicCamera.update();
         orthogonalTiledMapRenderer.setView(orthographicCamera);
-    }
-
-    private void handleInput(float delta) {
-        if (controller.isRightPressed())
-            player.body.setLinearVelocity(new Vector2(5, player.body.getLinearVelocity().y));
-        else if (controller.isLeftPressed())
-            player.body.setLinearVelocity(new Vector2(-5, player.body.getLinearVelocity().y));
-        else
-            player.body.setLinearVelocity(new Vector2(0, player.body.getLinearVelocity().y));
-        if (controller.isUpPressed() && player.body.getLinearVelocity().y == 0)
-            player.body.applyLinearImpulse(new Vector2(0, 7f), player.body.getWorldCenter(), true);
     }
 
     @Override
@@ -121,13 +111,12 @@ public class PlayScreen implements Screen {
         //draw
         controller.draw();
         hud.stage.draw();
-
     }
 
     @Override
     public void resize(int width, int height) {
-        viewPort.update(width, height);
         controller.resize(width, height);
+        viewPort.update(width, height);
     }
 
     @Override

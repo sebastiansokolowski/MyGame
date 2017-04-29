@@ -1,174 +1,93 @@
 package com.sebastian.sokolowski.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sebastian.sokolowski.game.sprites.Player;
 
 /**
- * Created by Sebastian Sokołowski on 06.04.17.
+ * Created by Sebastian Sokołowski on 27.04.17.
  */
 
 public class Controller {
-    private Viewport viewport;
-    private Stage stage;
-    boolean upPressed, downPressed, leftPressed, rightPressed;
-    private OrthographicCamera cam;
+    private final Player player;
+    private final FitViewport viewport;
+    private final OrthographicCamera cam;
+    private final Stage stage;
 
-    public Controller() {
+    private Touchpad touchpad;
+    private static float blockSpeed = 3;
+    private static float jumpHeight = 5;
+
+    public Controller(final Player player) {
+        this.player = player;
+
         cam = new OrthographicCamera();
         viewport = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, cam);
         stage = new Stage(viewport, MyGdxGame.batch);
 
-        stage.addListener(new InputListener() {
+        Skin touchpadSkin = new Skin();
+        touchpadSkin.add("touchBackground", new Texture("controller/touchBackground.png"));
+        touchpadSkin.add("touchKnob", new Texture("controller/touchKnob.png"));
+        Touchpad.TouchpadStyle touchpadStyle = new Touchpad.TouchpadStyle();
+        Drawable touchBackground = touchpadSkin.getDrawable("touchBackground");
+        Drawable touchKnob = touchpadSkin.getDrawable("touchKnob");
+        touchpadStyle.background = touchBackground;
+        touchpadStyle.knob = touchKnob;
+        touchpad = new Touchpad(10, touchpadStyle);
+        touchpad.setBounds(15, 15, 200, 200);
 
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.UP:
-                        upPressed = true;
-                        break;
-                    case Input.Keys.DOWN:
-                        downPressed = true;
-                        break;
-                    case Input.Keys.LEFT:
-                        leftPressed = true;
-                        break;
-                    case Input.Keys.RIGHT:
-                        rightPressed = true;
-                        break;
-                }
-                return true;
-            }
+        stage.addActor(touchpad);
 
+        //add control buttons
+        Image buttonA = new Image(new Texture("controller/buttonA.png"));
+        buttonA.addListener(new InputListener() {
             @Override
-            public boolean keyUp(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.UP:
-                        upPressed = false;
-                        break;
-                    case Input.Keys.DOWN:
-                        downPressed = false;
-                        break;
-                    case Input.Keys.LEFT:
-                        leftPressed = false;
-                        break;
-                    case Input.Keys.RIGHT:
-                        rightPressed = false;
-                        break;
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (player.body.getLinearVelocity().y == 0) {
+                    player.body.applyLinearImpulse(new Vector2(0, jumpHeight), player.body.getWorldCenter(), true);
                 }
                 return true;
             }
         });
-
-        Gdx.input.setInputProcessor(stage);
-
+        Image buttonB = new Image(new Texture("controller/buttonB.png"));
+        buttonB.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //TODO:
+                return true;
+            }
+        });
         Table table = new Table();
-        table.left().bottom();
-
-        Image upImg = new Image(new Texture("Controller/up.png"));
-        upImg.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                upPressed = true;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                upPressed = false;
-            }
-        });
-
-        Image downImg = new Image(new Texture("Controller/down.png"));
-        downImg.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                downPressed = true;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                downPressed = false;
-            }
-        });
-
-        Image rightImg = new Image(new Texture("Controller/right.png"));
-        rightImg.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                rightPressed = true;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                rightPressed = false;
-            }
-        });
-
-        Image leftImg = new Image(new Texture("Controller/left.png"));
-        leftImg.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                leftPressed = true;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                leftPressed = false;
-            }
-        });
-
-        table.add();
-        table.add(upImg).size(upImg.getWidth(), upImg.getHeight());
-        table.add();
-        table.row().pad(1, 1, 1, 1);
-        table.add(leftImg).size(leftImg.getWidth(), leftImg.getHeight());
-        table.add();
-        table.add(rightImg).size(rightImg.getWidth(), rightImg.getHeight());
-        table.row().padBottom(5);
-        table.add();
-        table.add(downImg).size(downImg.getWidth(), downImg.getHeight());
-        table.add();
+        table.setFillParent(true);
+        table.right().bottom();
+        table.add(buttonA).size(buttonA.getWidth(), buttonA.getHeight()).pad(15);
+        table.add(buttonB).size(buttonB.getWidth(), buttonB.getHeight()).pad(15);
 
         stage.addActor(table);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
-    public void draw() {
-        stage.draw();
-    }
-
-    public boolean isUpPressed() {
-        return upPressed;
-    }
-
-    public boolean isDownPressed() {
-        return downPressed;
-    }
-
-    public boolean isLeftPressed() {
-        return leftPressed;
-    }
-
-    public boolean isRightPressed() {
-        return rightPressed;
+    public void update() {
+        player.body.setLinearVelocity(new Vector2(touchpad.getKnobPercentX() * blockSpeed, player.body.getLinearVelocity().y));
     }
 
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+
+    public void draw() {
+        stage.draw();
     }
 }
