@@ -17,7 +17,7 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
  */
 
 public class Player extends Sprite {
-    public enum State {CROUCHING, FALLING, JUMPING, STANDING, RUNNING}
+    public enum State {DEAD, CROUCHING, FALLING, JUMPING, STANDING, RUNNING}
 
     public State currentState;
     public State previousState;
@@ -73,6 +73,10 @@ public class Player extends Sprite {
     public void update(float delta) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(delta));
+
+        if (body.getPosition().y < 0) {
+            currentState = State.DEAD;
+        }
     }
 
     private TextureRegion getFrame(float delta) {

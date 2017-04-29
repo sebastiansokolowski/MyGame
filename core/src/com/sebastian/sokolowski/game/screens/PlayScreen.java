@@ -83,7 +83,9 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
 
-        orthographicCamera.position.x = player.body.getPosition().x;
+        if (player.currentState != Player.State.DEAD) {
+            orthographicCamera.position.x = player.body.getPosition().x;
+        }
 
         player.update(delta);
 
@@ -111,6 +113,18 @@ public class PlayScreen implements Screen {
         //draw
         controller.draw();
         hud.stage.draw();
+
+        if (gameOver()) {
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+    }
+
+    public boolean gameOver() {
+        if (player.currentState == Player.State.DEAD) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -139,7 +153,6 @@ public class PlayScreen implements Screen {
         tiledMap.dispose();
         box2DDebugRenderer.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
         hud.dispose();
     }
 }

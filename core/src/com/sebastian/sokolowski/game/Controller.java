@@ -80,7 +80,9 @@ public class Controller {
     }
 
     public void update() {
-        player.body.setLinearVelocity(new Vector2(touchpad.getKnobPercentX() * blockSpeed, player.body.getLinearVelocity().y));
+        if (player.currentState != Player.State.DEAD) {
+            player.body.setLinearVelocity(new Vector2(touchpad.getKnobPercentX() * blockSpeed, player.body.getLinearVelocity().y));
+        }
     }
 
     public void resize(int width, int height) {
