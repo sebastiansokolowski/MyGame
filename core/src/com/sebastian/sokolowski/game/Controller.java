@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.sebastian.sokolowski.game.sprites.Player;
+import com.sebastian.sokolowski.game.sprites.player.Player;
 
 /**
  * Created by Sebastian Sokołowski on 27.04.17.
@@ -80,6 +80,7 @@ public class Controller {
     }
 
     public void update() {
+        player.setKnobPercent(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
         if (player.currentState != Player.State.DEAD) {
             player.body.setLinearVelocity(new Vector2(touchpad.getKnobPercentX() * blockSpeed, player.body.getLinearVelocity().y));
         }

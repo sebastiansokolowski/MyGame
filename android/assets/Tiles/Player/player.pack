@@ -3,79 +3,198 @@ player.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-run4
+run_gun_30_down
   rotate: false
-  xy: 1, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 0, 229
+  size: 400, 57
+  orig: 400, 57
   offset: 0, 0
   index: -1
-run1
+run_gun_60_down
   rotate: false
-  xy: 53, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 402, 229
+  size: 400, 57
+  orig: 400, 57
   offset: 0, 0
   index: -1
-run7
+run_gun_60_up
   rotate: false
-  xy: 105, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 0, 170
+  size: 400, 57
+  orig: 400, 57
   offset: 0, 0
   index: -1
-run8
+run_gun_30_up
   rotate: false
-  xy: 157, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 402, 170
+  size: 400, 57
+  orig: 400, 57
   offset: 0, 0
   index: -1
-basic2
+ladder_climb
   rotate: false
-  xy: 209, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 0, 111
+  size: 200, 57
+  orig: 200, 57
   offset: 0, 0
   index: -1
-basic3
+rope_move
   rotate: false
-  xy: 261, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 0, 52
+  size: 100, 57
+  orig: 100, 57
   offset: 0, 0
   index: -1
-run6
+run
   rotate: false
-  xy: 313, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 0, 0
+  size: 400, 50
+  orig: 400, 50
   offset: 0, 0
   index: -1
-run5
+ladder_shoot
   rotate: false
-  xy: 365, 1
-  size: 50, 50
-  orig: 50, 50
+  xy: 102, 52
+  size: 67, 57
+  orig: 67, 57
+  offset: 0, 0
+  index: -1
+stand_gun_60_down
+  rotate: false
+  xy: 171, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+stand_gun_60_up
+  rotate: false
+  xy: 202, 111
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+stand_gun_90_up
+  rotate: false
+  xy: 223, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+rope_gun_45_up
+  rotate: false
+  xy: 254, 111
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+stand_gun_90_down
+  rotate: false
+  xy: 275, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+stand_gun_30_up
+  rotate: false
+  xy: 306, 111
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+rope_gun_45_down
+  rotate: false
+  xy: 327, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+stand_gun_30_down
+  rotate: false
+  xy: 358, 111
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+rope_gun_90_up
+  rotate: false
+  xy: 379, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+rope_gun_90_down
+  rotate: false
+  xy: 410, 111
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+crawl
+  rotate: false
+  xy: 402, 0
+  size: 280, 50
+  orig: 280, 50
+  offset: 0, 0
+  index: -1
+rope_gun
+  rotate: false
+  xy: 431, 52
+  size: 50, 57
+  orig: 50, 57
+  offset: 0, 0
+  index: -1
+roll
+  rotate: false
+  xy: 462, 118
+  size: 200, 50
+  orig: 200, 50
   offset: 0, 0
   index: -1
 basic
   rotate: false
-  xy: 417, 1
+  xy: 483, 66
+  size: 150, 50
+  orig: 150, 50
+  offset: 0, 0
+  index: -1
+wall_kick
+  rotate: false
+  xy: 635, 66
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: -1
+ground
+  rotate: false
+  xy: 664, 118
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
+dash
+  rotate: false
+  xy: 736, 118
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
+dash_shoot
+  rotate: false
+  xy: 737, 66
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
+damage
+  rotate: false
+  xy: 684, 14
   size: 50, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
-run2
+wall_slide
   rotate: false
-  xy: 469, 1
-  size: 50, 50
-  orig: 50, 50
-  offset: 0, 0
-  index: -1
-run3
-  rotate: false
-  xy: 521, 1
+  xy: 736, 14
   size: 50, 50
   orig: 50, 50
   offset: 0, 0

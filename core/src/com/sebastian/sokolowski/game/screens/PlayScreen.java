@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sebastian.sokolowski.game.Controller;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
-import com.sebastian.sokolowski.game.sprites.Player;
+import com.sebastian.sokolowski.game.sprites.player.Player;
 import com.sebastian.sokolowski.game.utils.WorldCreator;
 
 /**
@@ -26,7 +25,6 @@ import com.sebastian.sokolowski.game.utils.WorldCreator;
 public class PlayScreen implements Screen {
     private final MyGdxGame game;
     private final Controller controller;
-    private TextureAtlas textureAtlas;
 
     private OrthographicCamera orthographicCamera;
     private Viewport viewPort;
@@ -45,7 +43,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(MyGdxGame game) {
         this.game = game;
-        textureAtlas = new TextureAtlas("Tiles/Player/player.pack");
+
 
         orthographicCamera = new OrthographicCamera();
         viewPort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, game.V_HEIGHT / MyGdxGame.PPM, orthographicCamera);
@@ -69,8 +67,8 @@ public class PlayScreen implements Screen {
         new WorldCreator(tiledMap, world);
     }
 
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
+    public World getWorld() {
+        return world;
     }
 
     @Override
