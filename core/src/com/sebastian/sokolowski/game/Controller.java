@@ -64,7 +64,7 @@ public class Controller {
         buttonB.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO:
+                player.fire();
                 return true;
             }
         });
@@ -80,7 +80,9 @@ public class Controller {
     }
 
     public void update() {
-        player.setKnobPercent(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        Vector2 vector2 = new Vector2(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        player.setKnobVector(vector2);
+
         if (player.currentState != Player.State.DEAD) {
             player.body.setLinearVelocity(new Vector2(touchpad.getKnobPercentX() * blockSpeed, player.body.getLinearVelocity().y));
         }

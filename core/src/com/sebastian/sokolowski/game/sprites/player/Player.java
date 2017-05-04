@@ -1,9 +1,11 @@
 package com.sebastian.sokolowski.game.sprites.player;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -13,14 +15,20 @@ import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
-import java.util.List;
-
 /**
  * Created by Sebastian Sokołowski on 06.04.17.
  */
 
 public class Player extends Sprite {
-    public enum State {DEAD, CROUCHING, FALLING, JUMPING, STANDING, RUNNING}
+    public enum State {
+        DEAD, CROUCHING, FALLING, JUMPING,
+        GUN_0,
+        GUN_UP_45, GUN_UP_30,
+        GUN_DOWN_45, GUN_DOWN_30,
+        GUN_UP_90, GUN_DOWN_90,
+    }
+
+    private boolean runningRight;
 
     private final TextureAtlas textureAtlas = new TextureAtlas("Tiles/Player/player.pack");
 
@@ -29,12 +37,10 @@ public class Player extends Sprite {
     public World world;
     public Body body;
     private PlayScreen playScreen;
-    private float knobPercentX;
-    private float knobPercentY;
+    private Vector2 knobVector = new Vector2(0, 0);
 
     private TextureRegion playerJump;
     private TextureRegion playerCrouching;
-    private TextureRegion playerStand;
     private Animation playerCrawl;
     private TextureRegion playerDamage;
     private Animation playerRunGun0;
@@ -42,32 +48,39 @@ public class Player extends Sprite {
     private Animation playerRunGunDown60;
     private Animation playerRunGunUp30;
     private Animation playerRunGunUp60;
+    private TextureRegion playerStandGun0;
+    private TextureRegion playerStandGunDown30;
+    private TextureRegion playerStandGunDown60;
+    private TextureRegion playerStandGunDown90;
+    private TextureRegion playerStandGunUp90;
+    private TextureRegion playerStandGunUp60;
+    private TextureRegion playerStandGunUp30;
 
-    private List<Bullet> bulletList;
+    private Array<Bullet> bulletList;
 
     private float stateTimer;
-    private boolean runningRight;
 
     public Player(World world, PlayScreen playScreen) {
         this.world = world;
         this.playScreen = playScreen;
-        currentState = State.STANDING;
-        previousState = State.STANDING;
+        currentState = State.GUN_0;
+        previousState = State.GUN_0;
         stateTimer = 0;
         runningRight = true;
+        bulletList = new Array<Bullet>();
 
         loadTextures();
 
         definePlayer();
         setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
-        setRegion(playerStand);
+        setRegion(playerStandGun0);
     }
 
     private void loadTextures() {
         //basic
         playerJump = loadTexture("basic", 2, 50, 50);
         playerCrouching = loadTexture("basic", 1, 50, 50);
-        playerStand = loadTexture("basic", 0, 50, 50);
+        playerStandGun0 = loadTexture("basic", 0, 50, 50);
 
         //crawl
         playerCrawl = loadAnimation("crawl", 70, 50);
@@ -75,20 +88,20 @@ public class Player extends Sprite {
         //damage
         playerDamage = loadTexture("damage", 0, 50, 50);
 
-        //run gun 0
+        //run gun
         playerRunGun0 = loadAnimation("run", 50, 50);
-
-        //run gun -30
         playerRunGunDown30 = loadAnimation("run_gun_30_down", 50, 57);
-
-        //run gun -60
         playerRunGunDown60 = loadAnimation("run_gun_60_down", 50, 57);
-
-        //run gun +30
         playerRunGunUp30 = loadAnimation("run_gun_30_up", 50, 57);
-
-        //run gun +60
         playerRunGunUp60 = loadAnimation("run_gun_60_up", 50, 57);
+
+        //stand gun
+        playerStandGunUp90 = loadTexture("stand_gun_90_up", 0, 50, 57);
+        playerStandGunUp60 = loadTexture("stand_gun_60_up", 0, 50, 57);
+        playerStandGunUp30 = loadTexture("stand_gun_30_up", 0, 50, 57);
+        playerStandGunDown30 = loadTexture("stand_gun_30_down", 0, 50, 57);
+        playerStandGunDown60 = loadTexture("stand_gun_60_down", 0, 50, 57);
+        playerStandGunDown90 = loadTexture("stand_gun_90_down", 0, 50, 57);
     }
 
     private TextureRegion loadTexture(String name, int i, int width, int height) {
@@ -133,11 +146,21 @@ public class Player extends Sprite {
         if (body.getPosition().y < 0) {
             currentState = State.DEAD;
         }
+
+        for (Bullet ball : bulletList) {
+            ball.update(delta);
+            if (ball.isDestroyed()) {
+                bulletList.removeValue(ball, true);
+            }
+        }
     }
 
-    public void setKnobPercent(float knobPercentX, float knobPercentY) {
-        this.knobPercentX = knobPercentX;
-        this.knobPercentY = knobPercentY;
+    public void fire() {
+        bulletList.add(new Bullet(playScreen, body.getPosition().x, body.getPosition().y, currentState, runningRight));
+    }
+
+    public void setKnobVector(Vector2 vector2) {
+        this.knobVector = vector2;
     }
 
     private TextureRegion getFrame(float delta) {
@@ -148,26 +171,53 @@ public class Player extends Sprite {
             case JUMPING:
                 textureRegion = playerJump;
                 break;
-            case RUNNING:
-                if (knobPercentY > 0.6f) {
-                    textureRegion = (TextureRegion) playerRunGunUp60.getKeyFrame(stateTimer, true);
-                } else if (knobPercentY > 0.3f) {
-                    textureRegion = (TextureRegion) playerRunGunUp30.getKeyFrame(stateTimer, true);
-                } else if (knobPercentY > 0f) {
+            case DEAD:
+            case CROUCHING:
+            case FALLING:
+            case GUN_0:
+                if (body.getLinearVelocity().x != 0) {
                     textureRegion = (TextureRegion) playerRunGun0.getKeyFrame(stateTimer, true);
-                } else if (knobPercentY > -0.6f) {
-                    textureRegion = (TextureRegion) playerRunGunDown30.getKeyFrame(stateTimer, true);
-                } else if (knobPercentY > -0.9f) {
-                    textureRegion = (TextureRegion) playerRunGunDown60.getKeyFrame(stateTimer, true);
                 } else {
-                    textureRegion = (TextureRegion) playerRunGun0.getKeyFrame(stateTimer, true);
+                    textureRegion = playerStandGun0;
                 }
                 break;
-            case CROUCHING:
-                //TODO:
-            case FALLING:
+            case GUN_UP_30:
+                if (body.getLinearVelocity().x != 0) {
+                    textureRegion = (TextureRegion) playerRunGunUp30.getKeyFrame(stateTimer, true);
+                } else {
+                    textureRegion = playerStandGunUp30;
+                }
+                break;
+            case GUN_UP_45:
+                if (body.getLinearVelocity().x != 0) {
+                    textureRegion = (TextureRegion) playerRunGunUp60.getKeyFrame(stateTimer, true);
+                } else {
+                    textureRegion = playerStandGunUp60;
+                }
+                break;
+            case GUN_DOWN_30:
+                if (body.getLinearVelocity().x != 0) {
+                    textureRegion = (TextureRegion) playerRunGunDown30.getKeyFrame(stateTimer, true);
+                } else {
+                    textureRegion = playerStandGunDown30;
+                }
+                break;
+            case GUN_DOWN_45:
+                if (body.getLinearVelocity().x != 0) {
+                    textureRegion = (TextureRegion) playerRunGunDown60.getKeyFrame(stateTimer, true);
+                } else {
+                    textureRegion = playerStandGunDown60;
+                }
+                break;
+            case GUN_UP_90:
+                textureRegion = playerStandGunUp90;
+                break;
+            case GUN_DOWN_90:
+                textureRegion = playerStandGunDown90;
+                break;
+
             default:
-                textureRegion = playerStand;
+                textureRegion = playerStandGun0;
         }
 
         if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
@@ -183,15 +233,54 @@ public class Player extends Sprite {
         return textureRegion;
     }
 
+    @Override
+    public void draw(Batch batch) {
+        super.draw(batch);
+        for (Bullet ball : bulletList) {
+            ball.draw(batch);
+        }
+    }
+
     private State getState() {
+        float angle = knobVector.angle();
+
         if (body.getLinearVelocity().y > 0) {
             return State.JUMPING;
         } else if (body.getLinearVelocity().y < 0) {
             return State.FALLING;
-        } else if (body.getLinearVelocity().x != 0) {
-            return State.RUNNING;
+        } else if (angle > 80 && angle < 100) {
+            return State.GUN_UP_90;
+        } else if (angle > 260 && angle < 280) {
+            return State.GUN_DOWN_90;
+        } else if (knobVector.x == 0 && knobVector.y == 0) {
+            return State.GUN_0;
         } else {
-            return State.STANDING;
+            boolean down = false;
+            if (angle >= 180) {
+                angle -= 180;
+                down = true;
+            }
+
+            if (angle >= 0 && angle < 15 ||
+                    angle > 165 && angle <= 180) {
+                return State.GUN_0;
+            } else if (angle >= 15 && angle < 45 ||
+                    angle > 135 && angle <= 165) {
+                if (down) {
+                    return State.GUN_DOWN_30;
+                } else {
+                    return State.GUN_UP_30;
+                }
+            } else if (angle >= 45 && angle < 75 ||
+                    angle > 105 && angle <= 135) {
+                if (down) {
+                    return State.GUN_DOWN_45;
+                } else {
+                    return State.GUN_UP_45;
+                }
+            } else {
+                return currentState;
+            }
         }
     }
 }
