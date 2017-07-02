@@ -1,0 +1,26 @@
+
+turret.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+turret_basic
+  rotate: false
+  xy: 1, 9
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: -1
+turret_bullet1
+  rotate: false
+  xy: 1, 1
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+turret_bullet2
+  rotate: false
+  xy: 103, 53
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
