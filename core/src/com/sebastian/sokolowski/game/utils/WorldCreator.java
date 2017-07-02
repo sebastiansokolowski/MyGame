@@ -10,8 +10,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.MyGdxGame;
-import com.sebastian.sokolowski.game.sprites.Beer;
-import com.sebastian.sokolowski.game.sprites.Ladder;
+import com.sebastian.sokolowski.game.screens.PlayScreen;
+import com.sebastian.sokolowski.game.sprites.enemies.basic.BasicEnemy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sebastian Sokołowski on 07.04.17.
@@ -19,14 +22,16 @@ import com.sebastian.sokolowski.game.sprites.Ladder;
 
 public class WorldCreator {
 
-    public WorldCreator(TiledMap tiledMap, World world) {
+    private List<BasicEnemy> basicEnemies = new ArrayList<BasicEnemy>();
+
+    public WorldCreator(TiledMap tiledMap, World world, PlayScreen playScreen) {
         BodyDef bodyDef = new BodyDef();
         PolygonShape polygonShape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
         //ground
-        for (MapObject mapObject : tiledMap.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -40,19 +45,15 @@ public class WorldCreator {
             body.createFixture(fixtureDef);
         }
 
+        // basic enemy
+        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+            basicEnemies.add(new BasicEnemy(world, rectangle.getX() / MyGdxGame.PPM, rectangle.getY() / MyGdxGame.PPM, playScreen));
+        }
+    }
 
-//        //beers
-//        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-//
-//            new Beer(world, tiledMap, rectangle);
-//        }
-//
-//        //ladders
-//        for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-//
-//            new Ladder(world, tiledMap, rectangle);
-//        }
+
+    public List<BasicEnemy> getEnemy() {
+        return basicEnemies;
     }
 }

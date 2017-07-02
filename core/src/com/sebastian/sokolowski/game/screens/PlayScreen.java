@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sebastian.sokolowski.game.Controller;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
+import com.sebastian.sokolowski.game.sprites.enemies.basic.BasicEnemy;
 import com.sebastian.sokolowski.game.sprites.player.Player;
 import com.sebastian.sokolowski.game.utils.WorldCreator;
 
@@ -25,6 +26,7 @@ import com.sebastian.sokolowski.game.utils.WorldCreator;
 public class PlayScreen implements Screen {
     private final MyGdxGame game;
     private final Controller controller;
+    private final WorldCreator worldCreator;
 
     private OrthographicCamera orthographicCamera;
     private Viewport viewPort;
@@ -39,7 +41,6 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
 
     private Player player;
-
 
     public PlayScreen(MyGdxGame game) {
         this.game = game;
@@ -64,7 +65,7 @@ public class PlayScreen implements Screen {
 
         controller = new Controller(player);
 
-        new WorldCreator(tiledMap, world);
+        worldCreator = new WorldCreator(tiledMap, world, this);
     }
 
     public World getWorld() {
@@ -86,6 +87,9 @@ public class PlayScreen implements Screen {
         }
 
         player.update(delta);
+        for (BasicEnemy basicEnemy : worldCreator.getEnemy()) {
+            basicEnemy.update(delta);
+        }
 
         orthographicCamera.update();
         orthogonalTiledMapRenderer.setView(orthographicCamera);
@@ -106,6 +110,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(orthographicCamera.combined);
         game.batch.begin();
         player.draw(game.batch);
+        for (BasicEnemy basicEnemy : worldCreator.getEnemy()) {
+            basicEnemy.draw(game.batch);
+        }
         game.batch.end();
 
         //draw

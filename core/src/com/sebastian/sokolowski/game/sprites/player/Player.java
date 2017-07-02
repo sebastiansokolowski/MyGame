@@ -28,7 +28,7 @@ public class Player extends Sprite {
         GUN_UP_90, GUN_DOWN_90,
     }
 
-    private boolean runningRight;
+    public boolean runningRight;
 
     private final TextureAtlas textureAtlas = new TextureAtlas("Tiles/Player/player.pack");
 
@@ -40,7 +40,7 @@ public class Player extends Sprite {
     private Vector2 knobVector = new Vector2(0, 0);
 
     private TextureRegion playerJump;
-    private TextureRegion playerCrouching;
+    private TextureRegion playerCrouch;
     private Animation playerCrawl;
     private TextureRegion playerDamage;
     private Animation playerRunGun0;
@@ -79,7 +79,7 @@ public class Player extends Sprite {
     private void loadTextures() {
         //basic
         playerJump = loadTexture("basic", 2, 50, 50);
-        playerCrouching = loadTexture("basic", 1, 50, 50);
+        playerCrouch = loadTexture("basic", 1, 50, 50);
         playerStandGun0 = loadTexture("basic", 0, 50, 50);
 
         //crawl
@@ -215,7 +215,6 @@ public class Player extends Sprite {
             case GUN_DOWN_90:
                 textureRegion = playerStandGunDown90;
                 break;
-
             default:
                 textureRegion = playerStandGun0;
         }
