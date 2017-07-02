@@ -3,7 +3,7 @@ flyingRobot.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-flying_robot
+basic
   rotate: false
   xy: 1, 1
   size: 200, 50
