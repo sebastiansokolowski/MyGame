@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
+import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.enemies.basic.BasicEnemy;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class WorldCreator {
 
-    private List<BasicEnemy> basicEnemies = new ArrayList<BasicEnemy>();
+    private List<Enemy> basicEnemies = new ArrayList<Enemy>();
 
     public WorldCreator(TiledMap tiledMap, World world, PlayScreen playScreen) {
         BodyDef bodyDef = new BodyDef();
@@ -53,7 +54,7 @@ public class WorldCreator {
     }
 
 
-    public List<BasicEnemy> getEnemy() {
+    public List<Enemy> getEnemies() {
         return basicEnemies;
     }
 }

@@ -38,8 +38,6 @@ public class BasicEnemy extends Enemy {
     private TextureRegion playerCrouch;
     private Animation playerRunGun0;
 
-    private float stateTimer;
-
     private long fireLastTime = System.currentTimeMillis();
     private long fireDelay = 2000;
 
@@ -47,7 +45,6 @@ public class BasicEnemy extends Enemy {
         super(new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack"), playScreen, x, y);
         currentState = State.GUN_0;
         previousState = State.GUN_0;
-        stateTimer = 0;
         bulletList = new Array<BasicEnemyBullet>();
 
         setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);

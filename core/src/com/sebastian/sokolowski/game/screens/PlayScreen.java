@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sebastian.sokolowski.game.Controller;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
-import com.sebastian.sokolowski.game.sprites.enemies.basic.BasicEnemy;
+import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.player.Player;
 import com.sebastian.sokolowski.game.utils.WorldCreator;
 
@@ -87,8 +87,8 @@ public class PlayScreen implements Screen {
         }
 
         player.update(delta);
-        for (BasicEnemy basicEnemy : worldCreator.getEnemy()) {
-            basicEnemy.update(delta);
+        for (Enemy enemy : worldCreator.getEnemies()) {
+            enemy.update(delta);
         }
 
         orthographicCamera.update();
@@ -110,8 +110,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(orthographicCamera.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for (BasicEnemy basicEnemy : worldCreator.getEnemy()) {
-            basicEnemy.draw(game.batch);
+        for (Enemy enemy: worldCreator.getEnemies()) {
+            enemy.draw(game.batch);
         }
         game.batch.end();
 

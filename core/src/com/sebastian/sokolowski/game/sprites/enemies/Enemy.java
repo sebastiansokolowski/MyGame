@@ -21,23 +21,27 @@ public abstract class Enemy extends Sprite {
     public TextureAtlas textureAtlas;
 
     public boolean runningRight;
+    public float stateTimer;
 
     public Enemy(TextureAtlas textureAtlas, PlayScreen playScreen, float x, float y) {
         this.textureAtlas = textureAtlas;
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
         this.runningRight = true;
+        this.stateTimer = 0;
 
         setPosition(x, y);
         loadTextures();
         defineBody();
     }
 
-    public abstract void update(float dt);
-
     public abstract void loadTextures();
 
     public abstract void defineBody();
+
+    public abstract void update(float dt);
+
+    public abstract void fire();
 
     public TextureRegion loadTexture(String name, int i, int width, int height) {
         TextureRegion textureRegion = textureAtlas.findRegion(name);
