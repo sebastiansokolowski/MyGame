@@ -14,6 +14,7 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.enemies.BasicEnemy;
 import com.sebastian.sokolowski.game.sprites.enemies.Turret;
+import com.sebastian.sokolowski.game.sprites.enemies.Turret2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,12 @@ public class WorldCreator {
         for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             basicEnemies.add(new Turret(playScreen, rectangle.getX() / MyGdxGame.PPM, rectangle.getY() / MyGdxGame.PPM));
+        }
+
+        // turret2 enemy
+        for (MapObject mapObject : tiledMap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+            basicEnemies.add(new Turret2(playScreen, rectangle.getX() / MyGdxGame.PPM, rectangle.getY() / MyGdxGame.PPM));
         }
     }
 
