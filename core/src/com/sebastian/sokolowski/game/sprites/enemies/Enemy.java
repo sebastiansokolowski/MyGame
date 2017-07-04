@@ -9,6 +9,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sebastian Sokołowski on 04.07.17.
  */
@@ -17,6 +20,7 @@ public abstract class Enemy extends Sprite {
     public World world;
     public PlayScreen playScreen;
 
+    public List<Bullet> bulletList;
     public Body body;
     public TextureAtlas textureAtlas;
 
@@ -27,6 +31,7 @@ public abstract class Enemy extends Sprite {
         this.textureAtlas = textureAtlas;
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
+        this.bulletList = new ArrayList<Bullet>();
         this.runningRight = true;
         this.stateTimer = 0;
 
