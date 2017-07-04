@@ -12,8 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
-import com.sebastian.sokolowski.game.sprites.enemies.basic.BasicEnemy;
-import com.sebastian.sokolowski.game.sprites.enemies.turret.Turret;
+import com.sebastian.sokolowski.game.sprites.enemies.BasicEnemy;
+import com.sebastian.sokolowski.game.sprites.enemies.Turret;
 
 import java.util.ArrayList;
 import java.util.List;

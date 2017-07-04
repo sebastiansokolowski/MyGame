@@ -1,4 +1,4 @@
-package com.sebastian.sokolowski.game.sprites.enemies.turret;
+package com.sebastian.sokolowski.game.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,18 +8,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
-import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
-import com.sebastian.sokolowski.game.sprites.player.Bullet;
-
-import java.util.List;
 
 /**
  * Created by Sebastian Sokołowski on 04.07.17.
  */
 
 public class Turret extends Enemy {
-    private List<Bullet> bulletList;
-
     public enum State {
         BASIC,
         SHOOTING,
