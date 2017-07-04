@@ -2,23 +2,21 @@ package com.sebastian.sokolowski.game.sprites.enemies.basic;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
+import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 
 /**
  * Created by Sebastian Sokołowski on 02.07.17.
  */
 
-public class BasicEnemy extends Sprite {
+public class BasicEnemy extends Enemy {
 
     public enum State {
         STANDING,
@@ -30,14 +28,8 @@ public class BasicEnemy extends Sprite {
         DEAD
     }
 
-    public World world;
-    private PlayScreen playScreen;
-
-    private final TextureAtlas textureAtlas = new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack");
-    public Body body;
     public State currentState;
     public State previousState;
-    private boolean runningRight;
     private Array<BasicEnemyBullet> bulletList;
 
     private TextureRegion playerStandGun0;
@@ -51,24 +43,18 @@ public class BasicEnemy extends Sprite {
     private long fireLastTime = System.currentTimeMillis();
     private long fireDelay = 2000;
 
-    public BasicEnemy(World world, Float x, Float y, PlayScreen playScreen) {
-        this.world = world;
-        this.playScreen = playScreen;
+    public BasicEnemy(PlayScreen playScreen, Float x, Float y) {
+        super(new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack"), playScreen, x, y);
         currentState = State.GUN_0;
         previousState = State.GUN_0;
-        runningRight = true;
         stateTimer = 0;
         bulletList = new Array<BasicEnemyBullet>();
 
-        setPosition(x, y);
-        loadTextures();
-
-        definePlayer();
         setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
         setRegion(playerStandGun0);
     }
 
-    private void loadTextures() {
+    public void loadTextures() {
         //basic
         playerStandGun0 = loadTexture("basic", 0, 50, 50);
         playerCrouch = loadTexture("basic", 1, 50, 50);
@@ -81,23 +67,8 @@ public class BasicEnemy extends Sprite {
         playerRunGun0 = loadAnimation("run", 50, 50);
     }
 
-    private TextureRegion loadTexture(String name, int i, int width, int height) {
-        TextureRegion textureRegion = textureAtlas.findRegion(name);
-        return new TextureRegion(textureRegion, i * width, 0, width, height);
-    }
 
-    private Animation loadAnimation(String name, int width, int height) {
-        TextureRegion textureRegion = textureAtlas.findRegion(name);
-        Array<TextureRegion> frames = new Array<TextureRegion>();
-
-        for (int i = 0; i < 8; i++) {
-            frames.add(new TextureRegion(textureRegion, i * width, 0, width, height));
-        }
-
-        return new Animation(0.1f, frames);
-    }
-
-    private void definePlayer() {
+    public void defineBody() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY());
         bodyDef.type = BodyDef.BodyType.DynamicBody;

@@ -48,7 +48,7 @@ public class WorldCreator {
         // basic enemy
         for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-            basicEnemies.add(new BasicEnemy(world, rectangle.getX() / MyGdxGame.PPM, rectangle.getY() / MyGdxGame.PPM, playScreen));
+            basicEnemies.add(new BasicEnemy(playScreen, rectangle.getX() / MyGdxGame.PPM, rectangle.getY() / MyGdxGame.PPM));
         }
     }
 
