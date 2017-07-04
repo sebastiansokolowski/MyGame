@@ -62,7 +62,7 @@ public class BasicEnemy extends Enemy {
         playerDamage = loadTexture("damage", 0, 50, 50);
 
         //run
-        playerRunGun0 = loadAnimation("run", 50, 50);
+        playerRunGun0 = loadAnimation("run", 8, 50, 50);
     }
 
 

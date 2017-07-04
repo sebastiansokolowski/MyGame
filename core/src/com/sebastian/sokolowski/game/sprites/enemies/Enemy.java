@@ -53,11 +53,11 @@ public abstract class Enemy extends Sprite {
         return new TextureRegion(textureRegion, i * width, 0, width, height);
     }
 
-    public Animation loadAnimation(String name, int width, int height) {
+    public Animation loadAnimation(String name, int count, int width, int height) {
         TextureRegion textureRegion = textureAtlas.findRegion(name);
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < count; i++) {
             frames.add(new TextureRegion(textureRegion, i * width, 0, width, height));
         }
 
