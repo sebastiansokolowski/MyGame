@@ -86,10 +86,10 @@ public class PlayScreen implements Screen {
             orthographicCamera.position.x = player.body.getPosition().x;
         }
 
-        player.update(delta);
         for (Enemy enemy : worldCreator.getEnemies()) {
             enemy.update(delta);
         }
+        player.update(delta);
 
         orthographicCamera.update();
         orthogonalTiledMapRenderer.setView(orthographicCamera);
@@ -109,10 +109,10 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(orthographicCamera.combined);
         game.batch.begin();
-        player.draw(game.batch);
         for (Enemy enemy: worldCreator.getEnemies()) {
             enemy.draw(game.batch);
         }
+        player.draw(game.batch);
         game.batch.end();
 
         //draw
