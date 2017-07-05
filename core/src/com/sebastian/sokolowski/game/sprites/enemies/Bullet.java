@@ -1,5 +1,6 @@
 package com.sebastian.sokolowski.game.sprites.enemies;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -58,11 +59,18 @@ public abstract class Bullet extends Sprite {
         body.setLinearVelocity(bulletVector);
     }
 
-    public void setDestroyed(boolean destroyed) {
-        this.destroyed = destroyed;
+    public void setDestroyed() {
+        this.destroyed = true;
     }
 
     public boolean isDestroyed() {
         return destroyed;
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if(!isDestroyed()){
+            super.draw(batch);
+        }
     }
 }

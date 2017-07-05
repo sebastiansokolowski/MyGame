@@ -56,6 +56,7 @@ public class Turret2 extends Enemy {
         fixtureDef.shape = circleShape;
 
         body.createFixture(fixtureDef);
+        body.setUserData(this);
     }
 
     @Override
@@ -74,6 +75,19 @@ public class Turret2 extends Enemy {
     @Override
     public void fire() {
 
+    }
+
+    @Override
+    public boolean isDead() {
+        if (currentState == State.DEAD) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setDead() {
+        currentState = State.DEAD;
     }
 
     private TextureRegion getFrame(float delta) {

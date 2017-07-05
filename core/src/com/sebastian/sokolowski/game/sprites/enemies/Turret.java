@@ -46,6 +46,7 @@ public class Turret extends Enemy {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY());
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.gravityScale = 1000;
 
         body = world.createBody(bodyDef);
 
@@ -56,6 +57,7 @@ public class Turret extends Enemy {
         fixtureDef.shape = circleShape;
 
         body.createFixture(fixtureDef);
+        body.setUserData(this);
     }
 
     @Override
@@ -74,6 +76,19 @@ public class Turret extends Enemy {
     @Override
     public void fire() {
 
+    }
+
+    @Override
+    public boolean isDead() {
+        if (currentState == State.DEAD) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setDead() {
+        currentState = State.DEAD;
     }
 
     private TextureRegion getFrame(float delta) {

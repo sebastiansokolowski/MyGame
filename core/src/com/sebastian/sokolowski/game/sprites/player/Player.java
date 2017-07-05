@@ -133,7 +133,7 @@ public class Player extends Sprite {
 
         fixtureDef.shape = circleShape;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
     }
 
     public void update(float delta) {
@@ -149,7 +149,7 @@ public class Player extends Sprite {
 
         for (Bullet ball : bulletList) {
             ball.update(delta);
-            if (ball.isDestroyed()) {
+            if (ball.isSetToDestroy()) {
                 bulletList.removeValue(ball, true);
             }
         }

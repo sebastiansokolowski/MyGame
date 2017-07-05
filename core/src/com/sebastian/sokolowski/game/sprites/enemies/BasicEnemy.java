@@ -39,8 +39,9 @@ public class BasicEnemy extends Enemy {
     private TextureRegion playerCrouch;
     private Animation playerRunGun0;
 
-    private long fireLastTime = System.currentTimeMillis();
-    private long fireDelay = 2000;
+    private float fireTimer = 0;
+    private float fireDelay = 1f;
+    private float deadDelay = 1f;
 
     public BasicEnemy(PlayScreen playScreen, Float x, Float y) {
         super(new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack"), playScreen, x, y);
@@ -52,6 +53,7 @@ public class BasicEnemy extends Enemy {
         setRegion(playerStandGun0);
     }
 
+    @Override
     public void loadTextures() {
         //basic
         playerStandGun0 = loadTexture("basic", 0, 50, 50);
@@ -65,7 +67,7 @@ public class BasicEnemy extends Enemy {
         playerRunGun0 = loadAnimation("run", 8, 50, 50);
     }
 
-
+    @Override
     public void defineBody() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY());
@@ -79,35 +81,64 @@ public class BasicEnemy extends Enemy {
 
         fixtureDef.shape = circleShape;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
     }
 
+    @Override
     public void update(float delta) {
         TextureRegion textureRegion = getFrame(delta);
+        Gdx.app.log("enemy", delta + "");
+        if (currentState == State.DEAD) {
+            if (body.getType() != BodyDef.BodyType.StaticBody) {
+                body.setType(BodyDef.BodyType.StaticBody);
+                body.setActive(false);
+            }
+
+            if (stateTimer > deadDelay && !destroy) {
+                world.destroyBody(body);
+                destroy = true;
+            }
+        } else {
+            if (body.getPosition().y < 0) {
+                currentState = State.DEAD;
+            }
+
+            fireTimer += delta;
+            if (fireTimer > fireDelay) {
+                fireTimer = 0;
+                fire();
+            }
+        }
 
         setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / MyGdxGame.PPM / 2,
                 textureRegion.getRegionWidth() / MyGdxGame.PPM, textureRegion.getRegionHeight() / MyGdxGame.PPM);
         setRegion(textureRegion);
 
-        if (body.getPosition().y < 0) {
-            currentState = State.DEAD;
-        }
-
         for (BasicEnemyBullet ball : bulletList) {
-            ball.update(delta);
             if (ball.isDestroyed()) {
                 bulletList.removeValue(ball, true);
+            } else {
+                ball.update(delta);
             }
-        }
-
-        if (fireLastTime + fireDelay < System.currentTimeMillis()) {
-            fire();
-            fireLastTime = System.currentTimeMillis();
         }
     }
 
+    @Override
     public void fire() {
         bulletList.add(new BasicEnemyBullet(playScreen, body.getPosition().x, body.getPosition().y, runningRight));
+    }
+
+    @Override
+    public boolean isDead() {
+        if (currentState == State.DEAD) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setDead() {
+        currentState = State.DEAD;
     }
 
     private TextureRegion getFrame(float delta) {
@@ -150,13 +181,20 @@ public class BasicEnemy extends Enemy {
 
     @Override
     public void draw(Batch batch) {
-        super.draw(batch);
+        if (!destroy) {
+            super.draw(batch);
+        }
+
         for (BasicEnemyBullet ball : bulletList) {
             ball.draw(batch);
         }
     }
 
     private State getState() {
+        if (currentState == State.DEAD) {
+            return State.DEAD;
+        }
+
         if (body.getLinearVelocity().y > 0) {
             return State.JUMPING;
         } else if (body.getLinearVelocity().y < 0) {
@@ -192,7 +230,7 @@ public class BasicEnemy extends Enemy {
 
             fixtureDef.shape = circleShape;
 
-            body.createFixture(fixtureDef);
+            body.createFixture(fixtureDef).setUserData(this);
         }
 
     }

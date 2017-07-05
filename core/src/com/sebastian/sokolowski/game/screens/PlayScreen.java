@@ -17,6 +17,7 @@ import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.player.Player;
+import com.sebastian.sokolowski.game.utils.WorldContactListener;
 import com.sebastian.sokolowski.game.utils.WorldCreator;
 
 /**
@@ -58,6 +59,7 @@ public class PlayScreen implements Screen {
 
 
         world = new World(new Vector2(0, -10), true);
+        world.setContactListener(new WorldContactListener());
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 

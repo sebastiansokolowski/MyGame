@@ -2,6 +2,7 @@ package com.sebastian.sokolowski.game.sprites.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -139,22 +140,6 @@ public class Bullet extends Sprite {
                 }
                 break;
         }
-//
-//
-//        if (angle >= 0 && angle <= 90 ||
-//                angle >= 270 && angle <= 360) {
-//            // right
-//            bdef.position.set(getX() + 25 / MyGdxGame.PPM, getY() + 50 / MyGdxGame.PPM);
-//        } else if (angle >= 75 && angle <= 105) {
-//            // up
-//            bdef.position.set(getX(), getY() + 25 / MyGdxGame.PPM);
-//        } else if (angle >= 255 && angle <= 285) {
-//            // down
-//            bdef.position.set(getX(), getY() - 25 / MyGdxGame.PPM);
-//        } else {
-//            // left
-//            bdef.position.set(getX() - 25 / MyGdxGame.PPM, getY() + 50 / MyGdxGame.PPM);
-//        }
 
         bdef.type = BodyDef.BodyType.KinematicBody;
 
@@ -166,30 +151,38 @@ public class Bullet extends Sprite {
 
         fixtureDef.shape = circleShape;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
     }
 
     public void update(float delta) {
-        if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
-            destroyed = true;
-            world.destroyBody(body);
+        if (setToDestroy) {
+            if (!destroyed) {
+                world.destroyBody(body);
+                destroyed = true;
+            }
+        } else {
+            stateTime += delta;
+            if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
+                setToDestroy = true;
+            }
+
+            setCenter(body.getPosition().x, body.getPosition().y);
+            body.setLinearVelocity(bulletVector);
         }
+    }
 
-        if (destroyed) {
-            return;
+    @Override
+    public void draw(Batch batch) {
+        if (!setToDestroy) {
+            super.draw(batch);
         }
-
-        stateTime += delta;
-
-        setCenter(body.getPosition().x, body.getPosition().y);
-        body.setLinearVelocity(bulletVector);
     }
 
     public void setToDestroy() {
         setToDestroy = true;
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
+    public boolean isSetToDestroy() {
+        return setToDestroy;
     }
 }
