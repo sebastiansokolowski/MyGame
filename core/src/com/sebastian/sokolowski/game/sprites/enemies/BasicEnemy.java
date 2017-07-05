@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
+import com.sebastian.sokolowski.game.sprites.Bullet;
 
 /**
  * Created by Sebastian Sokołowski on 02.07.17.
@@ -87,7 +88,7 @@ public class BasicEnemy extends Enemy {
     @Override
     public void update(float delta) {
         TextureRegion textureRegion = getFrame(delta);
-        Gdx.app.log("enemy", delta + "");
+
         if (currentState == State.DEAD) {
             if (body.getType() != BodyDef.BodyType.StaticBody) {
                 body.setType(BodyDef.BodyType.StaticBody);
@@ -115,7 +116,7 @@ public class BasicEnemy extends Enemy {
         setRegion(textureRegion);
 
         for (BasicEnemyBullet ball : bulletList) {
-            if (ball.isDestroyed()) {
+            if (ball.isSetToDestroy()) {
                 bulletList.removeValue(ball, true);
             } else {
                 ball.update(delta);
@@ -208,6 +209,7 @@ public class BasicEnemy extends Enemy {
         public BasicEnemyBullet(PlayScreen playScreen, float x, float y, boolean runningRight) {
             super(new TextureRegion(new Texture(Gdx.files.internal("Tiles/Player/bullet.png")), 36, 18),
                     playScreen, x, y, runningRight ? 0 : 180);
+            defineBody();
         }
 
         @Override

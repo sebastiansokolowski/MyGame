@@ -56,7 +56,7 @@ public class Player extends Sprite {
     private TextureRegion playerStandGunUp60;
     private TextureRegion playerStandGunUp30;
 
-    private Array<Bullet> bulletList;
+    private Array<PlayerBullet> bulletList;
 
     private float stateTimer;
 
@@ -67,7 +67,7 @@ public class Player extends Sprite {
         previousState = State.GUN_0;
         stateTimer = 0;
         runningRight = true;
-        bulletList = new Array<Bullet>();
+        bulletList = new Array<PlayerBullet>();
 
         loadTextures();
 
@@ -147,7 +147,7 @@ public class Player extends Sprite {
             currentState = State.DEAD;
         }
 
-        for (Bullet ball : bulletList) {
+        for (PlayerBullet ball : bulletList) {
             ball.update(delta);
             if (ball.isSetToDestroy()) {
                 bulletList.removeValue(ball, true);
@@ -156,7 +156,7 @@ public class Player extends Sprite {
     }
 
     public void fire() {
-        bulletList.add(new Bullet(playScreen, body.getPosition().x, body.getPosition().y, currentState, runningRight));
+        bulletList.add(new PlayerBullet(playScreen, body.getPosition().x, body.getPosition().y, currentState, runningRight));
     }
 
     public void setKnobVector(Vector2 vector2) {
@@ -235,7 +235,7 @@ public class Player extends Sprite {
     @Override
     public void draw(Batch batch) {
         super.draw(batch);
-        for (Bullet ball : bulletList) {
+        for (PlayerBullet ball : bulletList) {
             ball.draw(batch);
         }
     }

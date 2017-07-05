@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
+import com.sebastian.sokolowski.game.sprites.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;

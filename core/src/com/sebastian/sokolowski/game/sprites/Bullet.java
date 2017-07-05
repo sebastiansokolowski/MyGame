@@ -1,4 +1,4 @@
-package com.sebastian.sokolowski.game.sprites.enemies;
+package com.sebastian.sokolowski.game.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,12 +22,15 @@ public abstract class Bullet extends Sprite {
 
     public float angle;
     public float stateTime;
+    boolean setToDestroy;
     boolean destroyed;
 
     public Bullet(TextureRegion textureRegion, PlayScreen playScreen, float x, float y, float angle) {
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
         this.angle = angle;
+        this.stateTime = 0;
+        this.setToDestroy = false;
         this.destroyed = false;
 
         setRegion(textureRegion);
@@ -37,39 +40,38 @@ public abstract class Bullet extends Sprite {
         bulletVector.setAngle(angle);
         setOriginCenter();
         setRotation(angle);
-
-        defineBody();
     }
 
     public abstract void defineBody();
 
     public void update(float dt) {
-        if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
-            destroyed = true;
-            world.destroyBody(body);
+        if (setToDestroy) {
+            if (!destroyed) {
+                world.destroyBody(body);
+                destroyed = true;
+            }
+        } else {
+            stateTime += dt;
+            if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
+                setToDestroy = true;
+            }
+
+            setCenter(body.getPosition().x, body.getPosition().y);
+            body.setLinearVelocity(bulletVector);
         }
-
-        if (destroyed) {
-            return;
-        }
-
-        stateTime += dt;
-
-        setCenter(body.getPosition().x, body.getPosition().y);
-        body.setLinearVelocity(bulletVector);
     }
 
-    public void setDestroyed() {
-        this.destroyed = true;
+    public void setToDestroy() {
+        this.setToDestroy = true;
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
+    public boolean isSetToDestroy() {
+        return setToDestroy;
     }
 
     @Override
     public void draw(Batch batch) {
-        if(!isDestroyed()){
+        if (!setToDestroy) {
             super.draw(batch);
         }
     }

@@ -111,7 +111,7 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(orthographicCamera.combined);
         game.batch.begin();
-        for (Enemy enemy: worldCreator.getEnemies()) {
+        for (Enemy enemy : worldCreator.getEnemies()) {
             enemy.draw(game.batch);
         }
         player.draw(game.batch);

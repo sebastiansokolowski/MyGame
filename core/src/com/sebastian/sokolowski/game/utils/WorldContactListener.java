@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
-import com.sebastian.sokolowski.game.sprites.player.Bullet;
+import com.sebastian.sokolowski.game.sprites.player.PlayerBullet;
 
 /**
  * Created by Sebastian Sokołowski on 05.07.17.
@@ -28,18 +28,18 @@ public class WorldContactListener implements ContactListener {
 
         Gdx.app.log(TAG, "contact!!");
 
-        if (fixtureA.getUserData() instanceof Bullet && fixtureB.getUserData() instanceof Enemy) {
+        if (fixtureA.getUserData() instanceof PlayerBullet && fixtureB.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) fixtureB.getUserData();
-            Bullet bullet = (Bullet) fixtureA.getUserData();
+            PlayerBullet playerBullet = (PlayerBullet) fixtureA.getUserData();
 
-            bullet.setToDestroy();
+            playerBullet.setToDestroy();
             enemy.setDead();
 
             Gdx.app.log(TAG, "hit!!");
-        } else if (fixtureB.getUserData() instanceof Bullet && fixtureA.getUserData() instanceof Enemy) {
+        } else if (fixtureB.getUserData() instanceof PlayerBullet && fixtureA.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) fixtureA.getUserData();
-            Bullet bullet = (Bullet) fixtureB.getUserData();
-            bullet.setToDestroy();
+            PlayerBullet playerBullet = (PlayerBullet) fixtureB.getUserData();
+            playerBullet.setToDestroy();
             enemy.setDead();
             Gdx.app.log(TAG, "hit!!");
         }

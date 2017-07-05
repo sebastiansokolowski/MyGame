@@ -2,15 +2,10 @@ package com.sebastian.sokolowski.game.sprites.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.MyGdxGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
@@ -18,36 +13,20 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
  * Created by Sebastian Sokołowski on 29.04.17.
  */
 
-public class Bullet extends Sprite {
-    private final PlayScreen playScreen;
-    private final World world;
-    private final TextureRegion textureRegion;
+public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
     private final Player.State playerState;
     private final boolean runningRight;
-    private Vector2 bulletVector = new Vector2(10, 10);
-    private Body body;
 
-    private boolean destroyed;
-    float stateTime;
-    private boolean setToDestroy;
-
-    public Bullet(PlayScreen playScreen, float x, float y, Player.State playerState, boolean runningRight) {
-        this.playScreen = playScreen;
-        this.world = playScreen.getWorld();
+    public PlayerBullet(PlayScreen playScreen, float x, float y, Player.State playerState, boolean runningRight) {
+        super(new TextureRegion(new Texture(Gdx.files.internal("Tiles/Player/bullet.png")), 36, 18),
+                playScreen, x, y, getAngle(playerState, runningRight));
         this.playerState = playerState;
         this.runningRight = runningRight;
 
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal("Tiles/Player/bullet.png")), 36, 18);
-        setRegion(textureRegion);
-        float angle = getAngle(playerState, runningRight);
-        bulletVector.setAngle(angle);
-        setBounds(x, y, 36 / MyGdxGame.PPM, 18 / MyGdxGame.PPM);
-        setOriginCenter();
-        setRotation(angle);
-        defineBullet(playerState, runningRight);
+        defineBody();
     }
 
-    private float getAngle(Player.State playerState, boolean runningRight) {
+    private static float getAngle(Player.State playerState, boolean runningRight) {
         switch (playerState) {
             case GUN_DOWN_90:
                 return 270;
@@ -86,7 +65,7 @@ public class Bullet extends Sprite {
         }
     }
 
-    public void defineBullet(Player.State playerState, boolean runningRight) {
+    public void defineBody() {
         BodyDef bdef = new BodyDef();
 
         switch (playerState) {
@@ -152,37 +131,5 @@ public class Bullet extends Sprite {
         fixtureDef.shape = circleShape;
 
         body.createFixture(fixtureDef).setUserData(this);
-    }
-
-    public void update(float delta) {
-        if (setToDestroy) {
-            if (!destroyed) {
-                world.destroyBody(body);
-                destroyed = true;
-            }
-        } else {
-            stateTime += delta;
-            if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
-                setToDestroy = true;
-            }
-
-            setCenter(body.getPosition().x, body.getPosition().y);
-            body.setLinearVelocity(bulletVector);
-        }
-    }
-
-    @Override
-    public void draw(Batch batch) {
-        if (!setToDestroy) {
-            super.draw(batch);
-        }
-    }
-
-    public void setToDestroy() {
-        setToDestroy = true;
-    }
-
-    public boolean isSetToDestroy() {
-        return setToDestroy;
     }
 }
