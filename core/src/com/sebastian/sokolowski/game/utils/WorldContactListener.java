@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.sebastian.sokolowski.game.scenes.Hud;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.player.PlayerBullet;
 
@@ -34,6 +35,7 @@ public class WorldContactListener implements ContactListener {
 
             playerBullet.setToDestroy();
             enemy.setDead();
+            Hud.addScore(10);
 
             Gdx.app.log(TAG, "hit!!");
         } else if (fixtureB.getUserData() instanceof PlayerBullet && fixtureA.getUserData() instanceof Enemy) {
@@ -41,6 +43,8 @@ public class WorldContactListener implements ContactListener {
             PlayerBullet playerBullet = (PlayerBullet) fixtureB.getUserData();
             playerBullet.setToDestroy();
             enemy.setDead();
+
+            Hud.addScore(10);
             Gdx.app.log(TAG, "hit!!");
         }
     }
