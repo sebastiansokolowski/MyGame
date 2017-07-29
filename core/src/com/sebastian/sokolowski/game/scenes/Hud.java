@@ -101,6 +101,12 @@ public class Hud implements Disposable {
         lifeLabel.setText(life.toString());
     }
 
+    public static int removeLife(int value) {
+        life -= value;
+        lifeLabel.setText(life.toString());
+        return life;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();

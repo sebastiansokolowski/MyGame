@@ -7,7 +7,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.sebastian.sokolowski.game.scenes.Hud;
+import com.sebastian.sokolowski.game.sprites.Bullet;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
+import com.sebastian.sokolowski.game.sprites.player.Player;
 import com.sebastian.sokolowski.game.sprites.player.PlayerBullet;
 
 /**
@@ -27,25 +29,36 @@ public class WorldContactListener implements ContactListener {
             return;
         }
 
-        Gdx.app.log(TAG, "contact!!");
-
-        if (fixtureA.getUserData() instanceof PlayerBullet && fixtureB.getUserData() instanceof Enemy) {
-            Enemy enemy = (Enemy) fixtureB.getUserData();
-            PlayerBullet playerBullet = (PlayerBullet) fixtureA.getUserData();
-
-            playerBullet.setToDestroy();
-            enemy.setDead();
-            Hud.addScore(10);
-
-            Gdx.app.log(TAG, "hit!!");
-        } else if (fixtureB.getUserData() instanceof PlayerBullet && fixtureA.getUserData() instanceof Enemy) {
+        if (fixtureB.getUserData() instanceof PlayerBullet && fixtureA.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) fixtureA.getUserData();
+            enemy.setDead();
+
             PlayerBullet playerBullet = (PlayerBullet) fixtureB.getUserData();
             playerBullet.setToDestroy();
-            enemy.setDead();
 
             Hud.addScore(10);
-            Gdx.app.log(TAG, "hit!!");
+            Gdx.app.log(TAG, "Contact PlayerBullet -> Enemy");
+            return;
+        }
+
+        if (fixtureB.getUserData() instanceof Bullet && fixtureA.getUserData() instanceof Enemy) {
+            Bullet bullet = (Bullet) fixtureB.getUserData();
+            bullet.setToDestroy();
+            Gdx.app.log(TAG, "Contact Bullet -> Enemy");
+            return;
+        }
+
+        if (fixtureB.getUserData() instanceof Bullet && fixtureA.getUserData() instanceof Player) {
+            Player player = (Player) fixtureA.getUserData();
+            int life = Hud.removeLife(1);
+            if (life <= 0) {
+                player.setDead();
+            }
+
+            Bullet bullet = (Bullet) fixtureB.getUserData();
+            bullet.setToDestroy();
+            Gdx.app.log(TAG, "Contact Bullet -> Player");
+            return;
         }
     }
 

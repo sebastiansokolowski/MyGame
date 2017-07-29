@@ -90,12 +90,7 @@ public class BasicEnemy extends Enemy {
         TextureRegion textureRegion = getFrame(delta);
 
         if (currentState == State.DEAD) {
-            if (body.getType() != BodyDef.BodyType.StaticBody) {
-                body.setType(BodyDef.BodyType.StaticBody);
-                body.setActive(false);
-            }
-
-            if (stateTimer > deadDelay && !destroy) {
+            if (stateTimer > deadDelay && !destroy && bulletList.size == 0) {
                 world.destroyBody(body);
                 destroy = true;
             }
@@ -116,10 +111,9 @@ public class BasicEnemy extends Enemy {
         setRegion(textureRegion);
 
         for (BasicEnemyBullet ball : bulletList) {
-            if (ball.isSetToDestroy()) {
+            ball.update(delta);
+            if (ball.isDestroyed()) {
                 bulletList.removeValue(ball, true);
-            } else {
-                ball.update(delta);
             }
         }
     }
@@ -140,6 +134,7 @@ public class BasicEnemy extends Enemy {
     @Override
     public void setDead() {
         currentState = State.DEAD;
+        super.setDead();
     }
 
     private TextureRegion getFrame(float delta) {

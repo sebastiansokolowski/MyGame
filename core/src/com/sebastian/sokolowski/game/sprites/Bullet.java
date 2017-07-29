@@ -14,10 +14,12 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
  */
 
 public abstract class Bullet extends Sprite {
+    public static final String TAG = Bullet.class.getSimpleName();
+
     public final PlayScreen playScreen;
     public final World world;
 
-    public final Vector2 bulletVector = new Vector2(10, 10);
+    public final Vector2 bulletVector;
     public Body body;
 
     public float angle;
@@ -32,6 +34,7 @@ public abstract class Bullet extends Sprite {
         this.stateTime = 0;
         this.setToDestroy = false;
         this.destroyed = false;
+        bulletVector = new Vector2(10, 10);
 
         setRegion(textureRegion);
 
@@ -59,6 +62,10 @@ public abstract class Bullet extends Sprite {
             setCenter(body.getPosition().x, body.getPosition().y);
             body.setLinearVelocity(bulletVector);
         }
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     public void setToDestroy() {

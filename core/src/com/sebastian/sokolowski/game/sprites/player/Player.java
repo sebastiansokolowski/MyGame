@@ -149,7 +149,7 @@ public class Player extends Sprite {
 
         for (PlayerBullet ball : bulletList) {
             ball.update(delta);
-            if (ball.isSetToDestroy()) {
+            if (ball.isDestroyed()) {
                 bulletList.removeValue(ball, true);
             }
         }
@@ -240,7 +240,15 @@ public class Player extends Sprite {
         }
     }
 
+    public void setDead() {
+        currentState = State.DEAD;
+    }
+
     private State getState() {
+        if (currentState == State.DEAD) {
+            return State.DEAD;
+        }
+
         float angle = knobVector.angle();
 
         if (body.getLinearVelocity().y > 0) {

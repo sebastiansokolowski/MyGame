@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
@@ -55,7 +56,10 @@ public abstract class Enemy extends Sprite {
 
     public abstract boolean isDead();
 
-    public abstract void setDead();
+    public void setDead(){
+        body.setType(BodyDef.BodyType.StaticBody);
+        body.setActive(false);
+    }
 
 
     public TextureRegion loadTexture(String name, int i, int width, int height) {
