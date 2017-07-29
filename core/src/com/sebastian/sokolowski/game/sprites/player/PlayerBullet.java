@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
 /**
@@ -71,51 +71,51 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
         switch (playerState) {
             case GUN_DOWN_90:
                 if (runningRight) {
-                    bdef.position.set(getX() - 5 / MyGdxGame.PPM, getY() - 50 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 5 / OpenGunnerGame.PPM, getY() - 50 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() + 5 / MyGdxGame.PPM, getY() - 50 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 5 / OpenGunnerGame.PPM, getY() - 50 / OpenGunnerGame.PPM);
                 }
                 break;
             case GUN_UP_90:
                 if (runningRight) {
-                    bdef.position.set(getX() - 5 / MyGdxGame.PPM, getY() + 50 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 5 / OpenGunnerGame.PPM, getY() + 50 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() + 5 / MyGdxGame.PPM, getY() + 50 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 5 / OpenGunnerGame.PPM, getY() + 50 / OpenGunnerGame.PPM);
                 }
                 break;
             case GUN_UP_30:
                 if (runningRight) {
-                    bdef.position.set(getX() + 38 / MyGdxGame.PPM, getY() + 28 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 38 / OpenGunnerGame.PPM, getY() + 28 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() - 38 / MyGdxGame.PPM, getY() + 28 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 38 / OpenGunnerGame.PPM, getY() + 28 / OpenGunnerGame.PPM);
                 }
                 break;
             case GUN_UP_45:
                 if (runningRight) {
-                    bdef.position.set(getX() + 30 / MyGdxGame.PPM, getY() + 40 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 30 / OpenGunnerGame.PPM, getY() + 40 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() - 30 / MyGdxGame.PPM, getY() + 40 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 30 / OpenGunnerGame.PPM, getY() + 40 / OpenGunnerGame.PPM);
                 }
                 break;
             case GUN_DOWN_30:
                 if (runningRight) {
-                    bdef.position.set(getX() + 38 / MyGdxGame.PPM, getY() - 25 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 38 / OpenGunnerGame.PPM, getY() - 25 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() - 38 / MyGdxGame.PPM, getY() - 25 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 38 / OpenGunnerGame.PPM, getY() - 25 / OpenGunnerGame.PPM);
                 }
                 break;
             case GUN_DOWN_45:
                 if (runningRight) {
-                    bdef.position.set(getX() + 30 / MyGdxGame.PPM, getY() - 30 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 30 / OpenGunnerGame.PPM, getY() - 30 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() - 30 / MyGdxGame.PPM, getY() - 30 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 30 / OpenGunnerGame.PPM, getY() - 30 / OpenGunnerGame.PPM);
                 }
                 break;
             default:
                 if (runningRight) {
-                    bdef.position.set(getX() + 35 / MyGdxGame.PPM, getY() + 7 / MyGdxGame.PPM);
+                    bdef.position.set(getX() + 35 / OpenGunnerGame.PPM, getY() + 7 / OpenGunnerGame.PPM);
                 } else {
-                    bdef.position.set(getX() - 35 / MyGdxGame.PPM, getY() + 7 / MyGdxGame.PPM);
+                    bdef.position.set(getX() - 35 / OpenGunnerGame.PPM, getY() + 7 / OpenGunnerGame.PPM);
                 }
                 break;
         }
@@ -126,7 +126,7 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(3 / MyGdxGame.PPM);
+        circleShape.setRadius(3 / OpenGunnerGame.PPM);
 
         fixtureDef.shape = circleShape;
 

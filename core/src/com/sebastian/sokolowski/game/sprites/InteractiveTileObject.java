@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 
 /**
  * Created by Sebastian Sokołowski on 07.04.17.
@@ -32,11 +32,11 @@ public abstract class InteractiveTileObject {
         PolygonShape polygonShape = new PolygonShape();
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / MyGdxGame.PPM);
+        bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / OpenGunnerGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / OpenGunnerGame.PPM);
 
         body = world.createBody(bodyDef);
 
-        polygonShape.setAsBox((rectangle.getWidth() / 2) / MyGdxGame.PPM, (rectangle.getHeight() / 2) / MyGdxGame.PPM);
+        polygonShape.setAsBox((rectangle.getWidth() / 2) / OpenGunnerGame.PPM, (rectangle.getHeight() / 2) / OpenGunnerGame.PPM);
         fixtureDef.shape = polygonShape;
 
         body.createFixture(fixtureDef);

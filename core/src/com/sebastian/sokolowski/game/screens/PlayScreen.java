@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sebastian.sokolowski.game.Controller;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.player.Player;
@@ -25,7 +25,7 @@ import com.sebastian.sokolowski.game.utils.WorldCreator;
  */
 
 public class PlayScreen implements Screen {
-    private final MyGdxGame game;
+    private final OpenGunnerGame game;
     private final Controller controller;
     private final WorldCreator worldCreator;
 
@@ -43,18 +43,18 @@ public class PlayScreen implements Screen {
 
     private Player player;
 
-    public PlayScreen(MyGdxGame game) {
+    public PlayScreen(OpenGunnerGame game) {
         this.game = game;
 
 
         orthographicCamera = new OrthographicCamera();
-        viewPort = new FitViewport(MyGdxGame.V_WIDTH / MyGdxGame.PPM, game.V_HEIGHT / MyGdxGame.PPM, orthographicCamera);
+        viewPort = new FitViewport(OpenGunnerGame.V_WIDTH / OpenGunnerGame.PPM, game.V_HEIGHT / OpenGunnerGame.PPM, orthographicCamera);
 
         hud = new Hud(game.batch);
 
         tmxMapLoader = new TmxMapLoader();
         tiledMap = tmxMapLoader.load("level1.tmx");
-        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / MyGdxGame.PPM);
+        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / OpenGunnerGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
 

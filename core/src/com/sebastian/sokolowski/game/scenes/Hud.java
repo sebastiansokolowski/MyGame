@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 
 /**
  * Created by Sebastian Sokołowski on 05.04.17.
@@ -41,7 +41,7 @@ public class Hud implements Disposable {
         energy = 0;
         life = 3;
 
-        viewport = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(OpenGunnerGame.V_WIDTH, OpenGunnerGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));

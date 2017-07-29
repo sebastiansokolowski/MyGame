@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.Bullet;
 
@@ -50,7 +50,7 @@ public class BasicEnemy extends Enemy {
         previousState = State.GUN_0;
         bulletList = new Array<BasicEnemyBullet>();
 
-        setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
+        setBounds(0, 0, 50 / OpenGunnerGame.PPM, 50 / OpenGunnerGame.PPM);
         setRegion(playerStandGun0);
     }
 
@@ -78,7 +78,7 @@ public class BasicEnemy extends Enemy {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(25 / MyGdxGame.PPM);
+        circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
         fixtureDef.shape = circleShape;
 
@@ -106,8 +106,8 @@ public class BasicEnemy extends Enemy {
             }
         }
 
-        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / MyGdxGame.PPM / 2,
-                textureRegion.getRegionWidth() / MyGdxGame.PPM, textureRegion.getRegionHeight() / MyGdxGame.PPM);
+        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / OpenGunnerGame.PPM / 2,
+                textureRegion.getRegionWidth() / OpenGunnerGame.PPM, textureRegion.getRegionHeight() / OpenGunnerGame.PPM);
         setRegion(textureRegion);
 
         for (BasicEnemyBullet ball : bulletList) {
@@ -212,9 +212,9 @@ public class BasicEnemy extends Enemy {
             BodyDef bdef = new BodyDef();
 
             if (angle >= 0 && angle <= 90) {
-                bdef.position.set(getX() + 35 / MyGdxGame.PPM, getY() + 7 / MyGdxGame.PPM);
+                bdef.position.set(getX() + 35 / OpenGunnerGame.PPM, getY() + 7 / OpenGunnerGame.PPM);
             } else {
-                bdef.position.set(getX() - 35 / MyGdxGame.PPM, getY() + 7 / MyGdxGame.PPM);
+                bdef.position.set(getX() - 35 / OpenGunnerGame.PPM, getY() + 7 / OpenGunnerGame.PPM);
             }
 
             bdef.type = BodyDef.BodyType.KinematicBody;
@@ -223,7 +223,7 @@ public class BasicEnemy extends Enemy {
 
             FixtureDef fixtureDef = new FixtureDef();
             CircleShape circleShape = new CircleShape();
-            circleShape.setRadius(3 / MyGdxGame.PPM);
+            circleShape.setRadius(3 / OpenGunnerGame.PPM);
 
             fixtureDef.shape = circleShape;
 

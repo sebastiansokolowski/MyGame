@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
 /**
@@ -72,7 +72,7 @@ public class Player extends Sprite {
         loadTextures();
 
         definePlayer();
-        setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
+        setBounds(0, 0, 50 / OpenGunnerGame.PPM, 50 / OpenGunnerGame.PPM);
         setRegion(playerStandGun0);
     }
 
@@ -122,14 +122,14 @@ public class Player extends Sprite {
 
     private void definePlayer() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set((MyGdxGame.V_WIDTH / 2) / MyGdxGame.PPM, 210 / MyGdxGame.PPM);
+        bodyDef.position.set((OpenGunnerGame.V_WIDTH / 2) / OpenGunnerGame.PPM, 210 / OpenGunnerGame.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(25 / MyGdxGame.PPM);
+        circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
         fixtureDef.shape = circleShape;
 
@@ -139,8 +139,8 @@ public class Player extends Sprite {
     public void update(float delta) {
         TextureRegion textureRegion = getFrame(delta);
 
-        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / MyGdxGame.PPM / 2,
-                textureRegion.getRegionWidth() / MyGdxGame.PPM, textureRegion.getRegionHeight() / MyGdxGame.PPM);
+        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / OpenGunnerGame.PPM / 2,
+                textureRegion.getRegionWidth() / OpenGunnerGame.PPM, textureRegion.getRegionHeight() / OpenGunnerGame.PPM);
         setRegion(textureRegion);
 
         if (body.getPosition().y < 0) {

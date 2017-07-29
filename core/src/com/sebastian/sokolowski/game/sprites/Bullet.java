@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
 /**
@@ -38,7 +38,7 @@ public abstract class Bullet extends Sprite {
 
         setRegion(textureRegion);
 
-        setBounds(x, y, textureRegion.getRegionWidth() / MyGdxGame.PPM, textureRegion.getRegionHeight() / MyGdxGame.PPM);
+        setBounds(x, y, textureRegion.getRegionWidth() / OpenGunnerGame.PPM, textureRegion.getRegionHeight() / OpenGunnerGame.PPM);
 
         bulletVector.setAngle(angle);
         setOriginCenter();
@@ -55,7 +55,7 @@ public abstract class Bullet extends Sprite {
             }
         } else {
             stateTime += dt;
-            if (getY() * MyGdxGame.PPM > MyGdxGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
+            if (getY() * OpenGunnerGame.PPM > OpenGunnerGame.V_HEIGHT || getY() < 0 || stateTime > 5) {
                 setToDestroy = true;
             }
 

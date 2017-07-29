@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 
 /**
@@ -30,7 +30,7 @@ public class Turret2 extends Enemy {
         super(new TextureAtlas("Tiles/Enemies/Turret2/turret2.pack"), playScreen, x, y);
         currentState = State.BASIC;
 
-        setBounds(0, 0, 50 / MyGdxGame.PPM, 50 / MyGdxGame.PPM);
+        setBounds(0, 0, 50 / OpenGunnerGame.PPM, 50 / OpenGunnerGame.PPM);
         setRegion((TextureRegion) basic.getKeyFrame(stateTimer));
     }
 
@@ -51,7 +51,7 @@ public class Turret2 extends Enemy {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(25 / MyGdxGame.PPM);
+        circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
         fixtureDef.shape = circleShape;
 
@@ -63,8 +63,8 @@ public class Turret2 extends Enemy {
     public void update(float dt) {
         TextureRegion textureRegion = getFrame(dt);
 
-        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / MyGdxGame.PPM / 2,
-                textureRegion.getRegionWidth() / MyGdxGame.PPM, textureRegion.getRegionHeight() / MyGdxGame.PPM);
+        setBounds(body.getPosition().x - getWidth() / 2, body.getPosition().y - 50 / OpenGunnerGame.PPM / 2,
+                textureRegion.getRegionWidth() / OpenGunnerGame.PPM, textureRegion.getRegionHeight() / OpenGunnerGame.PPM);
         setRegion(textureRegion);
 
         if (body.getPosition().y < 0) {

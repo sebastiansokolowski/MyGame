@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sebastian.sokolowski.game.MyGdxGame;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 
 /**
  * Created by Sebastian Sokołowski on 29.04.17.
@@ -27,8 +27,8 @@ public class GameOverScreen implements Screen {
 
     public GameOverScreen(Game game) {
         this.game = game;
-        viewport = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, ((MyGdxGame) game).batch);
+        viewport = new FitViewport(OpenGunnerGame.V_WIDTH, OpenGunnerGame.V_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, ((OpenGunnerGame) game).batch);
 
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 
@@ -56,7 +56,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if (Gdx.input.justTouched()) {
-            game.setScreen(new PlayScreen((MyGdxGame) game));
+            game.setScreen(new PlayScreen((OpenGunnerGame) game));
             dispose();
         }
 

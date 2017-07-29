@@ -33,8 +33,8 @@ public class Controller {
         this.player = player;
 
         cam = new OrthographicCamera();
-        viewport = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, cam);
-        stage = new Stage(viewport, MyGdxGame.batch);
+        viewport = new FitViewport(OpenGunnerGame.V_WIDTH, OpenGunnerGame.V_HEIGHT, cam);
+        stage = new Stage(viewport, OpenGunnerGame.batch);
 
         Skin touchpadSkin = new Skin();
         touchpadSkin.add("touchBackground", new Texture("controller/touchBackground.png"));
