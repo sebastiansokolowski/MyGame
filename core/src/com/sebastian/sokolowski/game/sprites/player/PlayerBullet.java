@@ -124,11 +124,13 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
 
         body = world.createBody(bdef);
 
-        FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(3 / OpenGunnerGame.PPM);
 
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = OpenGunnerGame.PLAYER_SHOOT_BIT;
+        fixtureDef.filter.maskBits = OpenGunnerGame.ENEMY_BIT;
 
         body.createFixture(fixtureDef).setUserData(this);
     }

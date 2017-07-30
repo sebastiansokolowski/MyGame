@@ -49,14 +49,16 @@ public class Turret2 extends Enemy {
 
         body = world.createBody(bodyDef);
 
-        FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = OpenGunnerGame.ENEMY_BIT;
+        fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
+                OpenGunnerGame.PLAYER_SHOOT_BIT;
 
-        body.createFixture(fixtureDef);
-        body.setUserData(this);
+        body.createFixture(fixtureDef).setUserData(this);
     }
 
     @Override

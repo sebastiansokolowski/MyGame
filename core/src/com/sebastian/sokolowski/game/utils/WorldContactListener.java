@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.sebastian.sokolowski.game.OpenGunnerGame;
 import com.sebastian.sokolowski.game.scenes.Hud;
 import com.sebastian.sokolowski.game.sprites.Bullet;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
@@ -29,37 +30,44 @@ public class WorldContactListener implements ContactListener {
             return;
         }
 
-        if (fixtureB.getUserData() instanceof PlayerBullet && fixtureA.getUserData() instanceof Enemy) {
-            Enemy enemy = (Enemy) fixtureA.getUserData();
-            enemy.setDead();
+        int collision = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 
-            PlayerBullet playerBullet = (PlayerBullet) fixtureB.getUserData();
-            playerBullet.setToDestroy();
+        switch (collision) {
+            case OpenGunnerGame.PLAYER_SHOOT_BIT | OpenGunnerGame.ENEMY_BIT:
+                if (fixtureA.getFilterData().categoryBits == OpenGunnerGame.PLAYER_SHOOT_BIT) {
+                    collision((Enemy) fixtureB.getUserData(), (PlayerBullet) fixtureA.getUserData());
+                } else {
+                    collision((Enemy) fixtureA.getUserData(), (PlayerBullet) fixtureB.getUserData());
+                }
+                break;
+            case OpenGunnerGame.ENEMY_SHOOT_BIT | OpenGunnerGame.PLAYER_BIT:
+                if (fixtureA.getFilterData().categoryBits == OpenGunnerGame.ENEMY_SHOOT_BIT) {
+                    collision((Player) fixtureB.getUserData(), (Bullet) fixtureA.getUserData());
+                } else {
+                    collision((Player) fixtureA.getUserData(), (Bullet) fixtureB.getUserData());
+                }
+                break;
+        }
+    }
 
-            Hud.addScore(10);
-            Gdx.app.log(TAG, "Contact PlayerBullet -> Enemy");
-            return;
+    private void collision(Player player, Bullet bullet) {
+        int life = Hud.removeLife(1);
+        if (life <= 0) {
+            player.setDead();
         }
 
-        if (fixtureB.getUserData() instanceof Bullet && fixtureA.getUserData() instanceof Enemy) {
-            Bullet bullet = (Bullet) fixtureB.getUserData();
-            bullet.setToDestroy();
-            Gdx.app.log(TAG, "Contact Bullet -> Enemy");
-            return;
-        }
+        bullet.setToDestroy();
+        Gdx.app.log(TAG, "Contact Bullet -> Player");
+        return;
+    }
 
-        if (fixtureB.getUserData() instanceof Bullet && fixtureA.getUserData() instanceof Player) {
-            Player player = (Player) fixtureA.getUserData();
-            int life = Hud.removeLife(1);
-            if (life <= 0) {
-                player.setDead();
-            }
+    private void collision(Enemy enemy, PlayerBullet playerBullet) {
+        enemy.setDead();
 
-            Bullet bullet = (Bullet) fixtureB.getUserData();
-            bullet.setToDestroy();
-            Gdx.app.log(TAG, "Contact Bullet -> Player");
-            return;
-        }
+        playerBullet.setToDestroy();
+
+        Hud.addScore(10);
+        Gdx.app.log(TAG, "Contact PlayerBullet -> Enemy");
     }
 
     @Override

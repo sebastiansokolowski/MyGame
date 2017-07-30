@@ -76,11 +76,14 @@ public class BasicEnemy extends Enemy {
 
         body = world.createBody(bodyDef);
 
-        FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = OpenGunnerGame.ENEMY_BIT;
+        fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
+                OpenGunnerGame.PLAYER_SHOOT_BIT;
 
         body.createFixture(fixtureDef).setUserData(this);
     }
@@ -221,11 +224,13 @@ public class BasicEnemy extends Enemy {
 
             body = world.createBody(bdef);
 
-            FixtureDef fixtureDef = new FixtureDef();
             CircleShape circleShape = new CircleShape();
             circleShape.setRadius(3 / OpenGunnerGame.PPM);
 
+            FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = circleShape;
+            fixtureDef.filter.categoryBits = OpenGunnerGame.ENEMY_SHOOT_BIT;
+            fixtureDef.filter.maskBits = OpenGunnerGame.PLAYER_BIT;
 
             body.createFixture(fixtureDef).setUserData(this);
         }

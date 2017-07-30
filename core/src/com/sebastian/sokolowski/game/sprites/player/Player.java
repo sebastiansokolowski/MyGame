@@ -127,11 +127,14 @@ public class Player extends Sprite {
 
         body = world.createBody(bodyDef);
 
-        FixtureDef fixtureDef = new FixtureDef();
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(25 / OpenGunnerGame.PPM);
 
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = OpenGunnerGame.PLAYER_BIT;
+        fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
+                OpenGunnerGame.ENEMY_SHOOT_BIT;
 
         body.createFixture(fixtureDef).setUserData(this);
     }
