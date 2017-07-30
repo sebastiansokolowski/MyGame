@@ -117,6 +117,7 @@ public class Turret2 extends Enemy {
         }
 
         stateTimer = stateTimer + delta;
+        previousState = currentState;
         return textureRegion;
     }
 
