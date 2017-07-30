@@ -22,6 +22,7 @@ public class Turret2 extends Enemy {
     }
 
     private State currentState;
+    private State previousState;
 
     private Animation basic;
     private Animation basicShoot;
@@ -61,7 +62,6 @@ public class Turret2 extends Enemy {
         body.createFixture(fixtureDef).setUserData(this);
     }
 
-    @Override
     public void update(float dt) {
         TextureRegion textureRegion = getFrame(dt);
 
@@ -72,6 +72,8 @@ public class Turret2 extends Enemy {
         if (body.getPosition().y < 0) {
             currentState = State.DEAD;
         }
+
+        super.update(dt);
     }
 
     @Override
@@ -104,12 +106,14 @@ public class Turret2 extends Enemy {
                 textureRegion = (TextureRegion) basic.getKeyFrame(stateTimer, true);
         }
 
-        if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = false;
-        } else if ((body.getLinearVelocity().x > 0 || runningRight) && textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = true;
+        if(previousState != State.DEAD){
+            if ((body.getLinearVelocity().x < 0 || !runningRight) && textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = false;
+            } else if ((body.getLinearVelocity().x > 0 || runningRight) && !textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = true;
+            }
         }
 
         stateTimer = stateTimer + delta;

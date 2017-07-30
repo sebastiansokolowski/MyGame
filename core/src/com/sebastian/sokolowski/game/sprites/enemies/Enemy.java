@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.Bullet;
+import com.sebastian.sokolowski.game.sprites.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,9 @@ import java.util.List;
  */
 
 public abstract class Enemy extends Sprite {
-    public World world;
-    public PlayScreen playScreen;
+    World world;
+    PlayScreen playScreen;
+    Player player;
 
     public List<Bullet> bulletList;
     public Body body;
@@ -36,6 +38,7 @@ public abstract class Enemy extends Sprite {
         this.textureAtlas = textureAtlas;
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
+        this.player = playScreen.getPlayer();
         this.bulletList = new ArrayList<Bullet>();
         this.runningRight = true;
         this.destroy = false;
@@ -50,13 +53,11 @@ public abstract class Enemy extends Sprite {
 
     public abstract void defineBody();
 
-    public abstract void update(float dt);
-
     public abstract void fire();
 
     public abstract boolean isDead();
 
-    public void setDead(){
+    public void setDead() {
         body.setType(BodyDef.BodyType.StaticBody);
         body.setActive(false);
     }
@@ -76,6 +77,18 @@ public abstract class Enemy extends Sprite {
         }
 
         return new Animation(0.1f, frames);
+    }
+
+    public void update(float delta) {
+        if (destroy) {
+            return;
+        }
+
+        if (player.getX() >= getX()) {
+            runningRight = true;
+        } else {
+            runningRight = false;
+        }
     }
 
     @Override

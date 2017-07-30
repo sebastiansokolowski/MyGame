@@ -75,6 +75,10 @@ public class PlayScreen implements Screen {
         worldCreator = new WorldCreator(tiledMap, world, this);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public World getWorld() {
         return world;
     }

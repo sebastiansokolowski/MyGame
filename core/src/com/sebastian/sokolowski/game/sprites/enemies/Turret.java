@@ -14,6 +14,7 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
  */
 
 public class Turret extends Enemy {
+
     public enum State {
         BASIC,
         SHOOTING,
@@ -21,6 +22,7 @@ public class Turret extends Enemy {
     }
 
     private State currentState;
+    private State previousState;
 
     private TextureRegion basic;
     private TextureRegion basicShot;
@@ -62,7 +64,6 @@ public class Turret extends Enemy {
         body.createFixture(fixtureDef).setUserData(this);
     }
 
-    @Override
     public void update(float dt) {
         TextureRegion textureRegion = getFrame(dt);
 
@@ -73,6 +74,8 @@ public class Turret extends Enemy {
         if (body.getPosition().y < 0) {
             currentState = State.DEAD;
         }
+
+        super.update(dt);
     }
 
     @Override
@@ -106,18 +109,21 @@ public class Turret extends Enemy {
 
         }
 
-        if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = false;
-        } else if ((body.getLinearVelocity().x > 0 || runningRight) && textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = true;
+        if(previousState != State.DEAD){
+            if ((body.getLinearVelocity().x < 0 || !runningRight) && textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = false;
+            } else if ((body.getLinearVelocity().x > 0 || runningRight) && !textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = true;
+            }
         }
 
         stateTimer = currentState == State.SHOOTING ? stateTimer + delta : 0;
         if (stateTimer > shootingStateTime) {
             currentState = State.BASIC;
         }
+        previousState = currentState;
         return textureRegion;
     }
 

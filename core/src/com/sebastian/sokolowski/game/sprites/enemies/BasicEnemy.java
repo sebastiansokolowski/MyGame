@@ -88,7 +88,6 @@ public class BasicEnemy extends Enemy {
         body.createFixture(fixtureDef).setUserData(this);
     }
 
-    @Override
     public void update(float delta) {
         TextureRegion textureRegion = getFrame(delta);
 
@@ -119,6 +118,8 @@ public class BasicEnemy extends Enemy {
                 bulletList.removeValue(ball, true);
             }
         }
+
+        super.update(delta);
     }
 
     @Override
@@ -165,12 +166,14 @@ public class BasicEnemy extends Enemy {
                 }
         }
 
-        if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = false;
-        } else if ((body.getLinearVelocity().x > 0 || runningRight) && textureRegion.isFlipX()) {
-            textureRegion.flip(true, false);
-            runningRight = true;
+        if(previousState != State.DEAD){
+            if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = false;
+            } else if ((body.getLinearVelocity().x > 0 || runningRight) && textureRegion.isFlipX()) {
+                textureRegion.flip(true, false);
+                runningRight = true;
+            }
         }
 
         stateTimer = currentState == previousState ? stateTimer + delta : 0;
