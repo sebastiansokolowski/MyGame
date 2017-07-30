@@ -42,7 +42,7 @@ public class BasicEnemy extends Enemy {
 
     private float fireTimer = 0;
     private float fireDelay = 1f;
-    private float deadDelay = 1f;
+    private float deadDelay = 0.5f;
 
     public BasicEnemy(PlayScreen playScreen, Float x, Float y) {
         super(new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack"), playScreen, x, y);
