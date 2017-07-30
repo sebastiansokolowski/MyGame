@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -52,8 +53,12 @@ public class PlayScreen implements Screen {
 
         hud = new Hud(game.batch);
 
+        TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+        params.textureMagFilter = Texture.TextureFilter.Nearest;
+        params.textureMinFilter = Texture.TextureFilter.Nearest;
+
         tmxMapLoader = new TmxMapLoader();
-        tiledMap = tmxMapLoader.load("level1.tmx");
+        tiledMap = tmxMapLoader.load("level1.tmx",params);
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / OpenGunnerGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
