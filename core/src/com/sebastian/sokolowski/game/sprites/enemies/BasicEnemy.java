@@ -89,12 +89,18 @@ public class BasicEnemy extends Enemy {
     }
 
     public void update(float delta) {
+        if (body == null) {
+            return;
+        }
+
         TextureRegion textureRegion = getFrame(delta);
 
         if (currentState == State.DEAD) {
             if (stateTimer > deadDelay && !destroy && bulletList.size == 0) {
                 world.destroyBody(body);
+                body = null;
                 destroy = true;
+                return;
             }
         } else {
             if (body.getPosition().y < 0) {
@@ -124,7 +130,9 @@ public class BasicEnemy extends Enemy {
 
     @Override
     public void fire() {
-        bulletList.add(new BasicEnemyBullet(playScreen, body.getPosition().x, body.getPosition().y, runningRight));
+        if (body != null && body.isActive()) {
+            bulletList.add(new BasicEnemyBullet(playScreen, body.getPosition().x, body.getPosition().y, runningRight));
+        }
     }
 
     @Override
@@ -165,7 +173,7 @@ public class BasicEnemy extends Enemy {
                 }
         }
 
-        if(previousState != State.DEAD){
+        if (previousState != State.DEAD) {
             if ((body.getLinearVelocity().x < 0 || !runningRight) && !textureRegion.isFlipX()) {
                 textureRegion.flip(true, false);
                 runningRight = false;

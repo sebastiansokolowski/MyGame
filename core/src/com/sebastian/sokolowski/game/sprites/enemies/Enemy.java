@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
@@ -47,6 +46,7 @@ public abstract class Enemy extends Sprite {
         setPosition(x, y);
         loadTextures();
         defineBody();
+        body.setActive(false);
     }
 
     public abstract void loadTextures();

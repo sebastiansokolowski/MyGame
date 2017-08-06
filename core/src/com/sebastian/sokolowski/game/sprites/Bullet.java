@@ -51,6 +51,7 @@ public abstract class Bullet extends Sprite {
         if (setToDestroy) {
             if (!destroyed) {
                 world.destroyBody(body);
+                body = null;
                 destroyed = true;
             }
         } else {

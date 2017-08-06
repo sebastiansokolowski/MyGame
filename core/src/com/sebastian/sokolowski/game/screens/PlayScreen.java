@@ -58,7 +58,7 @@ public class PlayScreen implements Screen {
         params.textureMinFilter = Texture.TextureFilter.Nearest;
 
         tmxMapLoader = new TmxMapLoader();
-        tiledMap = tmxMapLoader.load("level1.tmx",params);
+        tiledMap = tmxMapLoader.load("level1.tmx", params);
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / OpenGunnerGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
@@ -99,6 +99,11 @@ public class PlayScreen implements Screen {
 
         for (Enemy enemy : worldCreator.getEnemies()) {
             enemy.update(delta);
+            if (enemy.body != null) {
+                if (enemy.getX() < player.getX() + (OpenGunnerGame.V_WIDTH + 100) / 2 / OpenGunnerGame.PPM) {
+                    enemy.body.setActive(true);
+                }
+            }
         }
         player.update(delta);
 
