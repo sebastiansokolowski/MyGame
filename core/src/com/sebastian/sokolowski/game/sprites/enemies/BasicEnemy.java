@@ -223,7 +223,8 @@ public class BasicEnemy extends Enemy {
                 bdef.position.set(getX() - 35 / OpenGunnerGame.PPM, getY() + 7 / OpenGunnerGame.PPM);
             }
 
-            bdef.type = BodyDef.BodyType.KinematicBody;
+            bdef.type = BodyDef.BodyType.DynamicBody;
+            bdef.bullet = true;
 
             body = world.createBody(bdef);
 
@@ -232,6 +233,7 @@ public class BasicEnemy extends Enemy {
 
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = circleShape;
+            fixtureDef.density = 0.000001f;
             fixtureDef.filter.categoryBits = OpenGunnerGame.ENEMY_SHOOT_BIT;
             fixtureDef.filter.maskBits = OpenGunnerGame.PLAYER_BIT;
 

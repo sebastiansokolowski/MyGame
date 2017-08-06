@@ -120,7 +120,8 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
                 break;
         }
 
-        bdef.type = BodyDef.BodyType.KinematicBody;
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.bullet = true;
 
         body = world.createBody(bdef);
 
@@ -129,6 +130,7 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.density = 0.000001f;
         fixtureDef.filter.categoryBits = OpenGunnerGame.PLAYER_SHOOT_BIT;
         fixtureDef.filter.maskBits = OpenGunnerGame.ENEMY_BIT;
 
