@@ -55,13 +55,13 @@ public abstract class Enemy extends Sprite {
 
     public abstract void fire();
 
+    public abstract void setDeadState();
+
     public abstract boolean isDead();
 
     public void setDead() {
-        body.setType(BodyDef.BodyType.StaticBody);
-        body.setActive(false);
+        setDeadState();
     }
-
 
     public TextureRegion loadTexture(String name, int i, int width, int height) {
         TextureRegion textureRegion = textureAtlas.findRegion(name);

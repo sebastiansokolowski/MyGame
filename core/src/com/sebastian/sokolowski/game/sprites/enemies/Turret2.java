@@ -90,9 +90,8 @@ public class Turret2 extends Enemy {
     }
 
     @Override
-    public void setDead() {
+    public void setDeadState() {
         currentState = State.DEAD;
-        super.setDead();
     }
 
     private TextureRegion getFrame(float delta) {
