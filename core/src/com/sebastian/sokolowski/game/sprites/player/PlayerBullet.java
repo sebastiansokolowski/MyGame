@@ -19,7 +19,7 @@ public class PlayerBullet extends com.sebastian.sokolowski.game.sprites.Bullet {
 
     public PlayerBullet(PlayScreen playScreen, float x, float y, Player.State playerState, boolean runningRight) {
         super(new TextureRegion(new Texture(Gdx.files.internal("Tiles/Player/bullet.png")), 36, 18),
-                playScreen, x, y, getAngle(playerState, runningRight));
+                playScreen, x, y, 10, getAngle(playerState, runningRight));
         this.playerState = playerState;
         this.runningRight = runningRight;
 
