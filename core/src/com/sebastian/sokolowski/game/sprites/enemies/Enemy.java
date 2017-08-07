@@ -12,8 +12,6 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.Bullet;
 import com.sebastian.sokolowski.game.sprites.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sebastian Sokołowski on 04.07.17.
@@ -24,7 +22,7 @@ public abstract class Enemy extends Sprite {
     PlayScreen playScreen;
     Player player;
 
-    public List<Bullet> bulletList;
+    public Array<Bullet> bulletList;
     public Body body;
     public TextureAtlas textureAtlas;
 
@@ -38,7 +36,7 @@ public abstract class Enemy extends Sprite {
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
         this.player = playScreen.getPlayer();
-        this.bulletList = new ArrayList<Bullet>();
+        this.bulletList = new Array<Bullet>();
         this.runningRight = true;
         this.destroy = false;
         this.stateTimer = 0;
@@ -80,6 +78,13 @@ public abstract class Enemy extends Sprite {
     }
 
     public void update(float delta) {
+        for (Bullet bullet : bulletList) {
+            bullet.update(delta);
+            if (bullet.isDestroyed()) {
+                bulletList.removeValue(bullet, true);
+            }
+        }
+
         if (destroy) {
             return;
         }
@@ -93,8 +98,9 @@ public abstract class Enemy extends Sprite {
 
     @Override
     public void draw(Batch batch) {
-        if (!destroy) {
-            super.draw(batch);
+        for (Bullet ball : bulletList) {
+            ball.draw(batch);
         }
+        super.draw(batch);
     }
 }

@@ -32,7 +32,6 @@ public class BasicEnemy extends Enemy {
 
     public State currentState;
     public State previousState;
-    private Array<BasicEnemyBullet> bulletList;
 
     private TextureRegion playerStandGun0;
     private TextureRegion playerJump;
@@ -48,7 +47,6 @@ public class BasicEnemy extends Enemy {
         super(new TextureAtlas("Tiles/Enemies/Enemy/enemy.pack"), playScreen, x, y);
         currentState = State.GUN_0;
         previousState = State.GUN_0;
-        bulletList = new Array<BasicEnemyBullet>();
 
         setBounds(0, 0, 50 / OpenGunnerGame.PPM, 50 / OpenGunnerGame.PPM);
         setRegion(playerStandGun0);
@@ -118,13 +116,6 @@ public class BasicEnemy extends Enemy {
                 textureRegion.getRegionWidth() / OpenGunnerGame.PPM, textureRegion.getRegionHeight() / OpenGunnerGame.PPM);
         setRegion(textureRegion);
 
-        for (BasicEnemyBullet ball : bulletList) {
-            ball.update(delta);
-            if (ball.isDestroyed()) {
-                bulletList.removeValue(ball, true);
-            }
-        }
-
         super.update(delta);
     }
 
@@ -192,10 +183,6 @@ public class BasicEnemy extends Enemy {
     public void draw(Batch batch) {
         if (!destroy) {
             super.draw(batch);
-        }
-
-        for (BasicEnemyBullet ball : bulletList) {
-            ball.draw(batch);
         }
     }
 
