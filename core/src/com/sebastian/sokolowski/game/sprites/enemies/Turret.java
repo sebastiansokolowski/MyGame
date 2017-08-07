@@ -46,7 +46,7 @@ public class Turret extends Enemy {
     @Override
     public void defineBody() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(getX(), getY());
+        bodyDef.position.set(getX() + basic.getRegionWidth() / 2 / OpenGunnerGame.PPM, getY());
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
