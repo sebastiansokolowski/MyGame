@@ -5,22 +5,22 @@ filter: Nearest,Nearest
 repeat: none
 basic
   rotate: false
-  xy: 1, 9
+  xy: 1, 1
   size: 100, 50
   orig: 100, 50
   offset: 0, 0
   index: -1
 bullet1
   rotate: false
-  xy: 1, 1
-  size: 6, 6
-  orig: 6, 6
+  xy: 103, 39
+  size: 12, 12
+  orig: 12, 12
   offset: 0, 0
   index: -1
 bullet2
   rotate: false
-  xy: 103, 53
-  size: 6, 6
-  orig: 6, 6
+  xy: 103, 25
+  size: 12, 12
+  orig: 12, 12
   offset: 0, 0
   index: -1
