@@ -101,7 +101,7 @@ public class PlayScreen implements Screen {
             enemy.update(delta);
             if (enemy.body != null) {
                 if (enemy.getX() < player.getX() + (OpenGunnerGame.V_WIDTH + 100) / 2 / OpenGunnerGame.PPM) {
-                    enemy.body.setActive(true);
+                    enemy.setActive(true);
                 }
             }
         }

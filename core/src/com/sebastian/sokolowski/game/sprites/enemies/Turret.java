@@ -29,9 +29,6 @@ public class Turret extends Enemy {
     private TextureRegion basic;
     private TextureRegion basicShot;
 
-    private float fireTimer = 0;
-    private float fireDelay = 2f;
-
     // Bullet
     boolean shotFirst = true;
     private TextureRegion bullet1;

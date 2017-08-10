@@ -14,6 +14,8 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.Bullet;
 import com.sebastian.sokolowski.game.sprites.player.Player;
 
+import java.util.Random;
+
 
 /**
  * Created by Sebastian Sokołowski on 04.07.17.
@@ -35,6 +37,9 @@ public abstract class Enemy extends Sprite {
     public boolean destroyed;
     private boolean dead;
 
+    float fireTimer = 0;
+    float fireDelay = 2f;
+
     public Enemy(TextureAtlas textureAtlas, PlayScreen playScreen, float x, float y) {
         this.textureAtlas = textureAtlas;
         this.playScreen = playScreen;
@@ -49,7 +54,7 @@ public abstract class Enemy extends Sprite {
         setPosition(x, y);
         loadTextures();
         defineBody();
-        body.setActive(false);
+        setActive(false);
     }
 
     public abstract void loadTextures();
@@ -121,5 +126,12 @@ public abstract class Enemy extends Sprite {
             ball.draw(batch);
         }
         super.draw(batch);
+    }
+
+    public void setActive(boolean active) {
+        if(body.isActive() != active){
+            body.setActive(active);
+            fireTimer = 0;
+        }
     }
 }

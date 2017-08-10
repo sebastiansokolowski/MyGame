@@ -38,8 +38,7 @@ public class BasicEnemy extends Enemy {
     private TextureRegion playerCrouch;
     private Animation playerRunGun0;
 
-    private float fireTimer = 0;
-    private float fireDelay = 1f;
+    private float fireDelay = 1.2f;
     private float deadDelay = 0.5f;
 
     public BasicEnemy(PlayScreen playScreen, Float x, Float y) {
