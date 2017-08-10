@@ -59,7 +59,8 @@ public class Turret2 extends Enemy {
         fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
                 OpenGunnerGame.PLAYER_SHOOT_BIT;
 
-        body.createFixture(fixtureDef).setUserData(this);
+        fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
     }
 
     public void update(float dt) {
@@ -82,14 +83,6 @@ public class Turret2 extends Enemy {
     }
 
     @Override
-    public boolean isDead() {
-        if (currentState == State.DEAD) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void setDeadState() {
         currentState = State.DEAD;
     }
@@ -105,7 +98,7 @@ public class Turret2 extends Enemy {
                 textureRegion = (TextureRegion) basic.getKeyFrame(stateTimer, true);
         }
 
-        if(previousState != State.DEAD){
+        if (previousState != State.DEAD) {
             if ((body.getLinearVelocity().x < 0 || !runningRight) && textureRegion.isFlipX()) {
                 textureRegion.flip(true, false);
                 runningRight = false;

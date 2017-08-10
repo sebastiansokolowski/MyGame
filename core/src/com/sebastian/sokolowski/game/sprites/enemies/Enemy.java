@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
@@ -25,11 +27,13 @@ public abstract class Enemy extends Sprite {
     public Array<Bullet> bulletList;
     public Body body;
     public TextureAtlas textureAtlas;
+    public Fixture fixture;
 
     public boolean runningRight;
     public float stateTimer;
 
-    public boolean destroy;
+    public boolean destroyed;
+    private boolean dead;
 
     public Enemy(TextureAtlas textureAtlas, PlayScreen playScreen, float x, float y) {
         this.textureAtlas = textureAtlas;
@@ -38,7 +42,8 @@ public abstract class Enemy extends Sprite {
         this.player = playScreen.getPlayer();
         this.bulletList = new Array<Bullet>();
         this.runningRight = true;
-        this.destroy = false;
+        this.destroyed = false;
+        this.dead = false;
         this.stateTimer = 0;
 
         setPosition(x, y);
@@ -55,10 +60,16 @@ public abstract class Enemy extends Sprite {
 
     public abstract void setDeadState();
 
-    public abstract boolean isDead();
+    public boolean isDead() {
+        return dead;
+    }
 
     public void setDead() {
-        setDeadState();
+        if (!dead) {
+            setDeadState();
+            disableCollisions();
+            dead = true;
+        }
     }
 
     public TextureRegion loadTexture(String name, int i, int width, int height) {
@@ -77,6 +88,10 @@ public abstract class Enemy extends Sprite {
         return new Animation(0.1f, frames);
     }
 
+    private void disableCollisions() {
+        fixture.setFilterData(new Filter());
+    }
+
     public void update(float delta) {
         for (Bullet bullet : bulletList) {
             bullet.update(delta);
@@ -85,14 +100,18 @@ public abstract class Enemy extends Sprite {
             }
         }
 
-        if (destroy) {
+        if (destroyed) {
             return;
         }
 
-        if (player.getX() >= getX()) {
-            runningRight = true;
+        if (dead) {
+            body.setActive(false);
         } else {
-            runningRight = false;
+            if (player.getX() >= getX()) {
+                runningRight = true;
+            } else {
+                runningRight = false;
+            }
         }
     }
 

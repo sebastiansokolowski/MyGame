@@ -70,7 +70,8 @@ public class Turret extends Enemy {
         fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
                 OpenGunnerGame.PLAYER_SHOOT_BIT;
 
-        body.createFixture(fixtureDef).setUserData(this);
+        fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
     }
 
     public void update(float delta) {
@@ -81,10 +82,10 @@ public class Turret extends Enemy {
         TextureRegion textureRegion = getFrame(delta);
 
         if (currentState == State.DEAD) {
-            if (!destroy && bulletList.size == 0) {
+            if (!destroyed && bulletList.size == 0) {
                 world.destroyBody(body);
                 body = null;
-                destroy = true;
+                destroyed = true;
                 return;
             }
         } else {
@@ -117,14 +118,6 @@ public class Turret extends Enemy {
             bulletList.add(new TurretBullet(playScreen, body.getPosition().x, body.getPosition().y, runningRight,
                     shotFirst ? bullet1 : bullet2));
         }
-    }
-
-    @Override
-    public boolean isDead() {
-        if (currentState == State.DEAD) {
-            return true;
-        }
-        return false;
     }
 
     @Override

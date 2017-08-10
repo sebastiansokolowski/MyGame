@@ -82,7 +82,8 @@ public class BasicEnemy extends Enemy {
         fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
                 OpenGunnerGame.PLAYER_SHOOT_BIT;
 
-        body.createFixture(fixtureDef).setUserData(this);
+        fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
     }
 
     public void update(float delta) {
@@ -93,10 +94,10 @@ public class BasicEnemy extends Enemy {
         TextureRegion textureRegion = getFrame(delta);
 
         if (currentState == State.DEAD) {
-            if (stateTimer > deadDelay && !destroy && bulletList.size == 0) {
+            if (stateTimer > deadDelay && !destroyed && bulletList.size == 0) {
                 world.destroyBody(body);
                 body = null;
-                destroy = true;
+                destroyed = true;
                 return;
             }
         } else {
@@ -123,14 +124,6 @@ public class BasicEnemy extends Enemy {
         if (body != null && body.isActive()) {
             bulletList.add(new BasicEnemyBullet(playScreen, body.getPosition().x, body.getPosition().y, runningRight));
         }
-    }
-
-    @Override
-    public boolean isDead() {
-        if (currentState == State.DEAD) {
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -180,7 +173,7 @@ public class BasicEnemy extends Enemy {
 
     @Override
     public void draw(Batch batch) {
-        if (!destroy) {
+        if (!destroyed) {
             super.draw(batch);
         }
     }
