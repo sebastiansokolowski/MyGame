@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -38,6 +39,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader tmxMapLoader;
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private float mapWidth;
+    private float mapHeight;
 
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -73,6 +76,20 @@ public class PlayScreen implements Screen {
         controller = new Controller(player);
 
         worldCreator = new WorldCreator(tiledMap, world, this);
+
+        getMapWidth();
+    }
+
+    private void getMapWidth() {
+        MapProperties mapProperties = tiledMap.getProperties();
+
+        int mapWidth = mapProperties.get("width", Integer.class);
+        int mapHeight = mapProperties.get("height", Integer.class);
+        int tilePixelWidth = mapProperties.get("tilewidth", Integer.class);
+        int tilePixelHeight = mapProperties.get("tileheight", Integer.class);
+
+        this.mapWidth = mapWidth * tilePixelWidth / OpenGunnerGame.PPM;
+        this.mapHeight = mapHeight * tilePixelHeight / OpenGunnerGame.PPM;
     }
 
     public Player getPlayer() {
@@ -88,12 +105,20 @@ public class PlayScreen implements Screen {
 
     }
 
+    private boolean moveCamera() {
+        if (player.body.getPosition().x < viewPort.getWorldWidth() / 2 ||
+                mapWidth < player.body.getPosition().x + viewPort.getWorldWidth() / 2) {
+            return false;
+        }
+        return true;
+    }
+
     public void update(float delta) {
         controller.update();
 
         world.step(1 / 60f, 6, 2);
 
-        if (player.currentState != Player.State.DEAD) {
+        if (player.currentState != Player.State.DEAD && moveCamera()) {
             orthographicCamera.position.x = player.body.getPosition().x;
         }
 
