@@ -30,6 +30,9 @@ public class Player extends Sprite {
         GUN_UP_90, GUN_DOWN_90,
     }
 
+    //controll
+    private static float jumpHeight = 5;
+
     public boolean runningRight;
 
     private final TextureAtlas textureAtlas = new TextureAtlas("Tiles/Player/player.pack");
@@ -141,6 +144,16 @@ public class Player extends Sprite {
 
         fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
+    }
+
+    public void jump() {
+        if (body.getLinearVelocity().y == 0) {
+            if (currentState == State.CLIMB) {
+                setCurrentState(State.FALLING);
+            } else {
+                body.applyLinearImpulse(new Vector2(0, jumpHeight), body.getWorldCenter(), true);
+            }
+        }
     }
 
     private void setFilterMask() {

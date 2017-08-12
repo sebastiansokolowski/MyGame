@@ -27,7 +27,6 @@ public class Controller {
 
     private Touchpad touchpad;
     private static float blockSpeed = 3;
-    private static float jumpHeight = 5;
 
     public Controller(final Player player) {
         this.player = player;
@@ -54,9 +53,7 @@ public class Controller {
         buttonA.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (player.body.getLinearVelocity().y == 0) {
-                    player.body.applyLinearImpulse(new Vector2(0, jumpHeight), player.body.getWorldCenter(), true);
-                }
+                player.jump();
                 return true;
             }
         });
