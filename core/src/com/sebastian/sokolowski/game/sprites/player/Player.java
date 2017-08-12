@@ -200,7 +200,9 @@ public class Player extends Sprite {
     }
 
     public void fire() {
-        bulletList.add(new PlayerBullet(playScreen, body.getPosition().x, body.getPosition().y, currentState, runningRight));
+        if (currentState != State.CLIMB) {
+            bulletList.add(new PlayerBullet(playScreen, body.getPosition().x, body.getPosition().y, currentState, runningRight));
+        }
     }
 
     public void setKnobVector(Vector2 vector2) {
