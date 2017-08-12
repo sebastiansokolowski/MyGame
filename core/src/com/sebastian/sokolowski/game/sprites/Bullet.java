@@ -27,7 +27,7 @@ public abstract class Bullet extends Sprite {
     boolean setToDestroy;
     boolean destroyed;
 
-    public Bullet(TextureRegion textureRegion, PlayScreen playScreen, float x, float y, int speed, float angle) {
+    public Bullet(TextureRegion textureRegion, PlayScreen playScreen, float x, float y, float speed, float angle) {
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
         this.angle = angle;

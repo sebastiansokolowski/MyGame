@@ -38,7 +38,7 @@ public class BasicEnemy extends Enemy {
     private TextureRegion playerCrouch;
     private Animation playerRunGun0;
 
-    private float fireDelay = 1.2f;
+    private float fireDelay = 1f;
     private float deadDelay = 0.5f;
 
     public BasicEnemy(PlayScreen playScreen, Float x, Float y) {
@@ -194,7 +194,7 @@ public class BasicEnemy extends Enemy {
     class BasicEnemyBullet extends Bullet {
         public BasicEnemyBullet(PlayScreen playScreen, float x, float y, boolean runningRight) {
             super(new TextureRegion(new Texture(Gdx.files.internal("Tiles/Player/bullet.png")), 36, 18),
-                    playScreen, x, y, 5, runningRight ? 0 : 180);
+                    playScreen, x, y, 3, runningRight ? 0 : 180);
             defineBody();
         }
 

@@ -160,7 +160,7 @@ public class Turret extends Enemy {
     class TurretBullet extends Bullet {
         public TurretBullet(PlayScreen playScreen, float x, float y, boolean runningRight, TextureRegion textureRegion) {
             super(textureRegion,
-                    playScreen, x, y, 5, (new Vector2(playScreen.getPlayer().getX(), playScreen.getPlayer().getY())).sub(x, y).angle());
+                    playScreen, x, y, 2.5f, (new Vector2(playScreen.getPlayer().getX(), playScreen.getPlayer().getY())).sub(x, y).angle());
             defineBody();
         }
 
