@@ -15,6 +15,7 @@ import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.enemies.BasicEnemy;
 import com.sebastian.sokolowski.game.sprites.enemies.Turret;
 import com.sebastian.sokolowski.game.sprites.enemies.Turret2;
+import com.sebastian.sokolowski.game.sprites.objects.Climber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,11 @@ public class WorldCreator {
         for (MapObject mapObject : tiledMap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             basicEnemies.add(new Turret2(playScreen, rectangle.getX() / OpenGunnerGame.PPM, rectangle.getY() / OpenGunnerGame.PPM));
+        }
+
+        // climber object
+        for (MapObject mapObject : tiledMap.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
+            new Climber(playScreen, mapObject);
         }
     }
 

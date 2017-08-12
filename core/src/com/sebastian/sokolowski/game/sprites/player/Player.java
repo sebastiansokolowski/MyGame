@@ -23,7 +23,7 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 
 public class Player extends Sprite {
     public enum State {
-        DEAD, CROUCHING, FALLING, JUMPING,
+        DEAD, CROUCHING, FALLING, JUMPING, CLIMB,
         GUN_0,
         GUN_UP_45, GUN_UP_30,
         GUN_DOWN_45, GUN_DOWN_30,
@@ -48,6 +48,7 @@ public class Player extends Sprite {
     private TextureRegion playerJump;
     private TextureRegion playerCrouch;
     private Animation playerCrawl;
+    private Animation playerClimb;
     private TextureRegion playerDamage;
     private Animation playerRunGun0;
     private Animation playerRunGunDown30;
@@ -89,17 +90,20 @@ public class Player extends Sprite {
         playerStandGun0 = loadTexture("basic", 0, 50, 50);
 
         //crawl
-        playerCrawl = loadAnimation("crawl", 70, 50);
+        playerCrawl = loadAnimation("crawl", 70, 50, 8);
+
+        //climb
+        playerClimb = loadAnimation("rope_move", 50, 57, 2);
 
         //damage
         playerDamage = loadTexture("damage", 0, 50, 50);
 
         //run gun
-        playerRunGun0 = loadAnimation("run", 50, 50);
-        playerRunGunDown30 = loadAnimation("run_gun_30_down", 50, 57);
-        playerRunGunDown60 = loadAnimation("run_gun_60_down", 50, 57);
-        playerRunGunUp30 = loadAnimation("run_gun_30_up", 50, 57);
-        playerRunGunUp60 = loadAnimation("run_gun_60_up", 50, 57);
+        playerRunGun0 = loadAnimation("run", 50, 50, 8);
+        playerRunGunDown30 = loadAnimation("run_gun_30_down", 50, 57, 8);
+        playerRunGunDown60 = loadAnimation("run_gun_60_down", 50, 57, 8);
+        playerRunGunUp30 = loadAnimation("run_gun_30_up", 50, 57, 8);
+        playerRunGunUp60 = loadAnimation("run_gun_60_up", 50, 57, 8);
 
         //stand gun
         playerStandGunUp90 = loadTexture("stand_gun_90_up", 0, 50, 57);
@@ -115,11 +119,11 @@ public class Player extends Sprite {
         return new TextureRegion(textureRegion, i * width, 0, width, height);
     }
 
-    private Animation loadAnimation(String name, int width, int height) {
+    private Animation loadAnimation(String name, int width, int height, int size) {
         TextureRegion textureRegion = textureAtlas.findRegion(name);
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
             frames.add(new TextureRegion(textureRegion, i * width, 0, width, height));
         }
 
@@ -138,12 +142,11 @@ public class Player extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
-        fixtureDef.filter.categoryBits = OpenGunnerGame.PLAYER_BIT;
-        fixtureDef.filter.maskBits = OpenGunnerGame.GROUND_BIT |
-                OpenGunnerGame.ENEMY_SHOOT_BIT;
 
         fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
+
+        setFilterMask();
     }
 
     public void jump() {
@@ -159,16 +162,18 @@ public class Player extends Sprite {
     private void setFilterMask() {
         Filter filter = new Filter();
         filter.categoryBits = OpenGunnerGame.PLAYER_BIT;
+        filter.maskBits = OpenGunnerGame.ENEMY_SHOOT_BIT;
 
         State state = getState();
+
         switch (state) {
             case JUMPING:
-                filter.maskBits = OpenGunnerGame.ENEMY_SHOOT_BIT;
+            case CLIMB:
+                filter.maskBits |= OpenGunnerGame.CLIMBER_BIT;
                 break;
             case FALLING:
             default:
-                filter.maskBits = OpenGunnerGame.GROUND_BIT |
-                        OpenGunnerGame.ENEMY_SHOOT_BIT;
+                filter.maskBits |= OpenGunnerGame.GROUND_BIT;
         }
         fixture.setFilterData(filter);
     }
@@ -181,7 +186,7 @@ public class Player extends Sprite {
         setRegion(textureRegion);
 
         if (body.getPosition().y < 0) {
-            currentState = State.DEAD;
+            setCurrentState(State.DEAD);
         }
 
         for (PlayerBullet ball : bulletList) {
@@ -202,13 +207,28 @@ public class Player extends Sprite {
         this.knobVector = vector2;
     }
 
+    public void setCurrentState(State currentState) {
+
+        switch (currentState) {
+            case CLIMB:
+                body.setGravityScale(0);
+                break;
+            default:
+                body.setGravityScale(1);
+        }
+        this.currentState = currentState;
+    }
+
     private TextureRegion getFrame(float delta) {
-        currentState = getState();
+        setCurrentState(getState());
 
         TextureRegion textureRegion;
         switch (currentState) {
             case JUMPING:
                 textureRegion = playerJump;
+                break;
+            case CLIMB:
+                textureRegion = (TextureRegion) playerClimb.getKeyFrame(stateTimer, true);
                 break;
             case DEAD:
             case CROUCHING:
@@ -266,7 +286,12 @@ public class Player extends Sprite {
             runningRight = true;
         }
 
-        stateTimer = currentState == previousState ? stateTimer + delta : 0;
+        if (body.getLinearVelocity().x != 0 &&
+                currentState == previousState) {
+            stateTimer += delta;
+        } else {
+            stateTimer = 0;
+        }
         previousState = currentState;
         return textureRegion;
     }
@@ -280,12 +305,15 @@ public class Player extends Sprite {
     }
 
     public void setDead() {
-        currentState = State.DEAD;
+        setCurrentState(State.DEAD);
     }
 
     private State getState() {
         if (currentState == State.DEAD) {
             return State.DEAD;
+        }
+        if (currentState == State.CLIMB) {
+            return State.CLIMB;
         }
 
         float angle = knobVector.angle();
