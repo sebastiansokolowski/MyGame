@@ -290,7 +290,7 @@ public class Player extends Sprite {
 
         if (body.getLinearVelocity().x != 0 &&
                 currentState == previousState) {
-            stateTimer += delta;
+            stateTimer += Math.abs(knobVector.x / 50);
         } else {
             stateTimer = 0;
         }
