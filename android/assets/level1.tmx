@@ -92,6 +92,6 @@
  </objectgroup>
  <objectgroup name="turret2"/>
  <objectgroup name="climber">
-  <object id="54" x="4483" y="418.667" width="486" height="8"/>
+  <object id="54" x="4483" y="411.667" width="486" height="8"/>
  </objectgroup>
 </map>
