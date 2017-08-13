@@ -35,7 +35,7 @@ public class WorldCreator {
         Body body;
 
         //ground
-        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -50,25 +50,25 @@ public class WorldCreator {
         }
 
         // basic enemy
-        for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             basicEnemies.add(new BasicEnemy(playScreen, rectangle.getX() / OpenGunnerGame.PPM, rectangle.getY() / OpenGunnerGame.PPM));
         }
 
         // turret enemy
-        for (MapObject mapObject : tiledMap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             basicEnemies.add(new Turret(playScreen, rectangle.getX() / OpenGunnerGame.PPM, rectangle.getY() / OpenGunnerGame.PPM));
         }
 
         // turret2 enemy
-        for (MapObject mapObject : tiledMap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             basicEnemies.add(new Turret2(playScreen, rectangle.getX() / OpenGunnerGame.PPM, rectangle.getY() / OpenGunnerGame.PPM));
         }
 
         // climber object
-        for (MapObject mapObject : tiledMap.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject mapObject : tiledMap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             new Climber(playScreen, mapObject);
         }
     }
