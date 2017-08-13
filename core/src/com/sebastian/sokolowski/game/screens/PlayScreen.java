@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -38,7 +38,7 @@ public class PlayScreen implements Screen {
     //tiled map
     private TmxMapLoader tmxMapLoader;
     private TiledMap tiledMap;
-    private OrthoCachedTiledMapRenderer orthoCachedTiledMapRenderer;
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private float mapWidth;
     private float mapHeight;
 
@@ -62,7 +62,7 @@ public class PlayScreen implements Screen {
 
         tmxMapLoader = new TmxMapLoader();
         tiledMap = tmxMapLoader.load("level1.tmx", params);
-        orthoCachedTiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap, 1 / OpenGunnerGame.PPM);
+        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / OpenGunnerGame.PPM);
         orthographicCamera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
 
@@ -133,7 +133,7 @@ public class PlayScreen implements Screen {
         player.update(delta);
 
         orthographicCamera.update();
-        orthoCachedTiledMapRenderer.setView(orthographicCamera);
+        orthogonalTiledMapRenderer.setView(orthographicCamera);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // render map
-        orthoCachedTiledMapRenderer.render();
+        orthogonalTiledMapRenderer.render();
 
         box2DDebugRenderer.render(world, orthographicCamera.combined);
 
