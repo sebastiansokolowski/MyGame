@@ -14,9 +14,6 @@ import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.Bullet;
 import com.sebastian.sokolowski.game.sprites.player.Player;
 
-import java.util.Random;
-
-
 /**
  * Created by Sebastian Sokołowski on 04.07.17.
  */

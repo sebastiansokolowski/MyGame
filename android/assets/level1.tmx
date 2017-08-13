@@ -5,6 +5,21 @@
  </tileset>
  <tileset firstgid="41" name="forest_0_4" tilewidth="50" tileheight="50" spacing="4" tilecount="72" columns="12">
   <image source="Tiles/Forest/forest_0_4.png" width="644" height="320"/>
+  <tile id="21">
+   <properties>
+    <property name="animation" value="waterfall"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="animation" value="waterfall"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="animation" value="waterfall"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="113" name="ground" tilewidth="50" tileheight="50" spacing="4" margin="2" tilecount="76" columns="19">
   <image source="Tiles/Ground/ground.png" width="1024" height="256"/>

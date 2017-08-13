@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sebastian.sokolowski.game.OpenGunnerGame;
+import com.sebastian.sokolowski.game.animations.Waterfall;
 import com.sebastian.sokolowski.game.screens.PlayScreen;
 import com.sebastian.sokolowski.game.sprites.enemies.Enemy;
 import com.sebastian.sokolowski.game.sprites.enemies.BasicEnemy;
@@ -33,6 +34,9 @@ public class WorldCreator {
         PolygonShape polygonShape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
+
+        //animations
+        new Waterfall(tiledMap);
 
         //ground
         for (MapObject mapObject : tiledMap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
